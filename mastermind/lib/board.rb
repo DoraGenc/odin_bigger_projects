@@ -12,10 +12,10 @@ class Board
     index = guess_counter - 1
     current_board[index] = guess
   
-    all_blows_and_hits << current_blows_and_hits
+    all_blows_and_hits[index] = current_blows_and_hits
   end
 
-  def print_board #blows und hits sind noch nicht definiert
+  def print_board(guess_counter)
 
     header = "|   Blows   |   Hits    |    1    |    2    |    3    |    4    |"
     horizontal_separator = "-"

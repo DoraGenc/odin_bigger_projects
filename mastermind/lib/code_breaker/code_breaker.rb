@@ -10,6 +10,8 @@ require_relative 'split_guess.rb'
 require_relative 'split_guess_feedback.rb'
 require_relative 'try_variations.rb'
 
+require 'odin_bigger_projects/mastermind/lib/feedback.rb'
+
 
 class CodeBreaker
 
@@ -61,7 +63,7 @@ class CodeBreaker
 
   def first_guess
 
-    first_guess = [colors_to_check[0], colors_to_check[0], colors_to_check[1], colors_to_check[1].]
+    first_guess = [colors_to_check[0], colors_to_check[0], colors_to_check[1], colors_to_check[1]]
 
     change_color_state(colors_to_check[0])
     change_color_state(colors_to_check[0])
@@ -71,7 +73,7 @@ class CodeBreaker
 
   def change_color_state(color)
 
-    color_to_check.delete(color)
+    colors_to_check.delete(color)
     checked_colors << color
   end
 
@@ -237,7 +239,12 @@ class CodeBreaker
 
       win_next_round = true
       created_guess = true
+
+    else
+    puts "No case found????"
+
     end 
+  end
 
 
   def determine_remaining_side
@@ -258,12 +265,11 @@ class CodeBreaker
 
   def receive_new_feedback(new_feedback)
 
-    feedback = new_feedback #1. feedback zuweisen
+    feedback = new_feedback
     new_guess = return_guess
   end
 
   def return_guess
- #DAS MUSS NOCH GEMACHT WERDEN!!
 
   new_guess = guess
 
@@ -278,5 +284,10 @@ class CodeBreaker
 
   private
 
-  attr_accessor :feedback, :split_guess_strat
+  attr_accessor :feedback, :split_guess_strat, :excluded_colors, :included_colors, :last_feedback, :last_guess, 
+              :split_guess_feedback, :color_check_strat, :color_check_feedback, :find_side_strat, :find_side_feedback, 
+              :find_position_strat, :find_position_feedback, :try_variations_strat, :colors_to_check, :checked_colors, 
+              :undetermined_side_colors, :left_colors, :right_colors, :next_guess, :win_next_round
+
+  attr_reader :colors
 end
