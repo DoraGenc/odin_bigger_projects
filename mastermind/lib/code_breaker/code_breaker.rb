@@ -36,7 +36,6 @@ class CodeBreaker
   @find_position_feedback = false
 
   @try_variations_strat = false
-  @try_variations_feedack = false
 
   @last_guess = nil
   @last_feedback = nil
@@ -76,18 +75,18 @@ class CodeBreaker
     checked_colors << color
   end
 
-  def receive_new_feedback(new_feedback)
-
-    feedback = new_feedback #1. feedback zuweisen
-                            #2. guessen
-    update_last_feedback    #3. feedback zu last_feedback machen & feedback leeren
-  end
-
   def update_last_feedback
 
     last_feedback = feedback
     feedback = nil
   end
+
+  def update_last_guess
+
+    last_guess = guess
+    guess = nil
+  end
+
 
   def update_excluded_colors!(colors) #nimmt nur index zahlen an 
 
@@ -131,62 +130,56 @@ class CodeBreaker
     if win_next_round
       
       created_guess = true
-      guess = next_guess
-
-      return guess
+      return next_guess
     end
 
     until created_guess
 
-    case
-    when strat_state == nil
+    case strat_state
+    when nil
         
       guess = first_guess
       change_strat(split_guess_feedback)
       
       created_guess = true
-      return guess
+      
 
-    when strat_state == split_guess_strat
+    when split_guess_strat
 
       split_guess = SplitGuess.new
      guess = split_guess.guess(colors_to_check)
      change_strat(split_feedback_strat)
-
      created_guess = true
-      return guess
 
-    when strat_state == split_guess_feedback
+    when split_guess_feedback
 
       split_feedback = SplitGuessFeedback.new(feedback)
       
       if split_feedback.guess
 
         win_next_round = true
-        return next_guess = split_feedback.guess #ändern?
-
+        next_guess = split_feedback.guess
+       
+        created_guess = true
 
       elsif split_feedback.change_strat
-
         change_strat(color_check_guess)
 
       elsif split_feedback.excluded_colors
-
         update_excluded_colors!(split_feedback.excluded_colors)
       end
     
 
-    when strat_state == color_check_strat
+    when color_check_strat
 
       color_check = ColorCheck.new
       guess = color_check.guess(last_guess)
       change_strat(color_check_feedback)
 
       created_guess = true
-      return guess
 
 
-    when strat_state == color_check_feedback
+    when color_check_feedback
 
       color_check_feedback = ColorCheckFeedback.new(feedback, last_guess, last_feedback, color_check_guess)
       color_check_feedback.evaluate
@@ -195,8 +188,7 @@ class CodeBreaker
       update_excluded_colors!(color_check.excluded_colors)
       update_quantity!(color_check.quantity)
 
-      if colors_to_check.length == 0
-
+      if colors_to_check.empty?
         change_strat(find_position_strat)
 
       else 
@@ -204,7 +196,7 @@ class CodeBreaker
       end
     
 
-    when strat_state == find_position_strat
+    when find_position_strat
 
       find_position_guess = FindPosition.new
 
@@ -213,16 +205,14 @@ class CodeBreaker
       change_strat(find_position_feedback)
 
       created_guess = true
-      return guess
 
   
-    when strat_state == find_position_feedback
+    when find_position_feedback
 
       find_position_feedback = FindPositionFeedback.new
       find_position_feedback.evaluate(feedback, last_guess)
 
       if find_position_feedback.left_color
-
         undetermined_side_colors.delete_at(find_position_feedback.left_color)
         left_colors << find_position_feedback.left_color
 
@@ -234,32 +224,20 @@ class CodeBreaker
       change_strat(find_position_guess)
 
       if undetermined_side_colors.length == 1
-
        determine_remaining_side
        change_strat(try_variations_strat)
       end 
 
 
-    when strat_state == try_variations_strat #wenn wir nur noch left & right colors haben :3
+    when try_variations_strat #wenn wir nur noch left & right colors haben :3
 
       try_variations_guess = TryVariations.new
-
-      change_strat(try_variations_feedack)
-
       next_guess = try_variations_guess.next_guess
       guess = try_variations_guess.guess
 
       win_next_round = true
-
       created_guess = true
-      return guess
-    
-
-    when try_variations_feedback #unnötig
-
-      return guess = next_guess
     end 
-  end 
 
 
   def determine_remaining_side
@@ -278,10 +256,21 @@ class CodeBreaker
     strat = false
   end 
 
+  def receive_new_feedback(new_feedback)
+
+    feedback = new_feedback #1. feedback zuweisen
+    new_guess = return_guess
+  end
 
   def return_guess
  #DAS MUSS NOCH GEMACHT WERDEN!!
 
+  new_guess = guess
+
+  update_last_feedback
+  update_last_guess
+
+  return new_guess
   end 
 
 
