@@ -13,7 +13,6 @@ class CodeBreaker
     @first_guess = [0, 0, 1, 1]
 
     @last_guess = nil
-    @winning_code = nil
   end 
 
 
@@ -28,6 +27,7 @@ class CodeBreaker
     end 
 
     @last_guess = create_guess
+    puts possible_codes.inspect
     puts "possible codes length = #{possible_codes.length}"
 
     return @last_guess
@@ -75,37 +75,30 @@ class CodeBreaker
     color_count = Hash.new(0)
     last_guess.each { |color| color_count[color] += 1 }
 
-
-    code.each_with_index do |number, index|
-  
-      if last_guess[index] == number
+    code.each_with_index do |remaining_code, index|
+      if last_guess[index] == remaining_code
         hits += 1
-        color_count[number] -= 1
+        color_count[remaining_code] -= 1
       end 
     end 
 
-    code.each_with_index do |number, index|
-
-      if last_guess.include?(number) && color_count[number] > 0
+    code.each_with_index do |remaining_code, index|
+      if last_guess[index] != remaining_code && color_count[remaining_code] > 0
         blows += 1
-        color_count[number] -= 1
+        color_count[remaining_code] -= 1
       end
     end 
 
     mimicked_feedback = [blows, hits]
 
-    if mimicked_feedback != @feedback
+    unless mimicked_feedback == @feedback
       laser_beam(code)
-
-    elsif mimicked_feedback == [4, 0]
-      @winning_code = code
     end
-
-    mimicked_feedback
   end
 
   def laser_beam(impossible_code)
     possible_codes.delete(impossible_code)
+    print " #{impossible_code}"
   end
   
   def get_feedback(blows_and_hits)
