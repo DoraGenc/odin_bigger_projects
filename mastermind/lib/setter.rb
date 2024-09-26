@@ -1,17 +1,13 @@
 require_relative 'players.rb'
 
-class Setter < Players
+class Setter
 
   attr_accessor :win
-  attr_reader :name
+  attr_reader :name, :type
 
   def initialize(name, type)
     @name = name
     @type = type
     @win = false
   end 
-
-  private
-
-  attr_writer :secret_code
 end

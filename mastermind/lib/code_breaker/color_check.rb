@@ -1,4 +1,5 @@
-class ColorCheck << CodeBreaker
+
+class ColorCheck
 
   def guess(last_guess)
 

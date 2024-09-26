@@ -1,6 +1,6 @@
 
 
-class FindPosition << CodeBreaker
+class FindPosition
 
   def guess(undetermined_side_colors, excluded_colors)
 

@@ -21,16 +21,14 @@ class CodeBreaker
   def guess(counted_blows_and_hits)
 
     unless is_first_guess
-      puts "\nfeedback before: #{@feedback.inspect}"
       get_feedback(counted_blows_and_hits)
-      puts "feedback after: #{@feedback.inspect}"
     end 
 
-    @last_guess = create_guess
+    self.last_guess = create_guess
     puts possible_codes.inspect
     puts "possible codes length = #{possible_codes.length}"
 
-    return @last_guess
+    return self.last_guess
   end 
 
   def create_guess
@@ -39,7 +37,7 @@ class CodeBreaker
 
       puts "it's the first guess!"
 
-      @is_first_guess = false #hier ist @ nötig,
+      self.is_first_guess = false #hier ist @ nötig,
       guess = first_guess #aber hier nicht?!
 
     else 
@@ -102,8 +100,18 @@ class CodeBreaker
   end
   
   def get_feedback(blows_and_hits)
-    @feedback = blows_and_hits #geht nicht mit nur "feedback"????
+    self.feedback = blows_and_hits #geht nicht mit nur "feedback"????
   end
+
+   
+  #def minimax 
+
+    #best_score = Float::INFINITY #spezielle Konstante
+  
+    #possible_codes.each do |possible_code|
+
+ # end 
+
 
 
   private

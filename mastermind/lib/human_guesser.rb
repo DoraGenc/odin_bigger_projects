@@ -3,15 +3,13 @@ require_relative 'guesser.rb'
 
 class HumanGuesser < Guesser
 
-  attr_reader :name, :type
-
   include Colors
 
   def initialize(name, type)
     super(name, type)
   end 
   
-  def guess
+  def guess(_any)
 
     guessed_code = Array.new
 

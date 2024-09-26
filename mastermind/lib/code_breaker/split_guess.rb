@@ -1,4 +1,4 @@
-class SplitGuess << CodeBreaker
+class SplitGuess
 
   def guess(colors_to_check)
 

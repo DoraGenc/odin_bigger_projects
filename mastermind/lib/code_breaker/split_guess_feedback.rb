@@ -2,15 +2,15 @@
 
 class SplitGuessFeedback
 
-  attr_reader :change_strat, :excluded_colors
+  attr_reader :change_strat, :excluded_colors, :split_guess
 
-  def initialize(feedback, last_guess)
+  def initialize(feedback, last_guess) #last_guess nicht bekommen?s
 
     @feedback = feedback
     @last_guess = last_guess
 
     @change_strat = nil
-    @guess = nil
+    @split_guess = nil
     @excluded_colors = nil
 
   end
@@ -18,18 +18,17 @@ class SplitGuessFeedback
   def evaluate
 
     if feedback[0] == 4
-      return guess = split_win
+      return guess = split_win #Die Logik funktioniert leider nicht so
     end
 
-   if feedback.sum > 0 #= mindestens eine Farbe enthalten!!
+    if feedback.sum > 0 #= mindestens eine Farbe enthalten!!
 
-    change_strat = color_check_strat
+     change_strat = true # -> color_check_strat
 
-  else #beide Farben sind nicht enthalten
+    else #beide Farben sind nicht enthalten
 
-    excluded_colors << last_guess
-
-   #update_excluded_colors!(last_guess)
+      excluded_colors << last_guess
+    end
   end
 
 
@@ -43,5 +42,5 @@ class SplitGuessFeedback
   private
 
   attr_reader :feedback, :last_guess
-  attr_accessor :guess
+  attr_accessor :guess, :change_strat
 end

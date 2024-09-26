@@ -18,7 +18,7 @@ class HumanSetter < Setter
   def create
     
     created_code = Array.new
-    TypingEffects.standard_typing("Hi " + "Human! ".bold.green + "Please create your Secret Code. You can type in 4 colors.\nThose are the colors you can choose from:\n\n"); pause
+    #TypingEffects.standard_typing("Hi " + "Human! ".bold.green + "Please create your Secret Code. You can type in 4 colors.\nThose are the colors you can choose from:\n\n"); pause
     print_colors
     pause(1)
 

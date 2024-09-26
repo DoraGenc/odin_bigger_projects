@@ -12,24 +12,28 @@ class Feedback
 
 
   def count_blows_and_hits(guessed_code, secret_code)
-   
+
     blows = 0
-    hits = 0
-    
-    guessed_code.each_with_index do |guess, index|
-        
-      next if !secret_code.include?(guess)
+    hits = 0 
+    color_count = Hash.new(0)
 
-      if secret_code[index] == guess
+    secret_code.each { |color| color_count[color] += 1 }
 
+    guessed_code.each_with_index do |number, index|
+      if secret_code[index] == number
         hits += 1
+        color_count[number] -= 1
+      end 
+    end 
 
-      else
+    guessed_code.each_with_index do |number, index|
+      if secret_code[index] != number && color_count[number] > 0
         blows += 1
+        color_count[number] -= 1
       end
     end 
 
-    self.current_blows_and_hits = [blows, hits]
+    @current_blows_and_hits = [blows, hits]
   end 
 
 
@@ -39,7 +43,7 @@ class Feedback
       players.guesser.win = true
       return true
       
-    elsif guess_counter >= 12
+    elsif guess_counter >= 15 #HIER GEÄNDERT
       players.setter.win = true
       return true
 

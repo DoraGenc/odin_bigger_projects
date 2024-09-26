@@ -4,7 +4,7 @@ class ColorCheckFeedback
 
   attr_reader :excluded_colors, :included_colors, :quantity
 
-  def initialize(feedback, last_guess, last_feedback, color_check_guess)
+  def initialize(feedback, last_guess, last_feedback, color_check_guess) #hier ist was falsch, weil durch return_guess last_guess auch = color_check_guess ist
 
     @feedback = feedback
     @last_feedback = last_feedback
@@ -17,7 +17,7 @@ class ColorCheckFeedback
     @quantity = Hash.new
   end 
 
-  def evaluate
+  def evaluate #(es gibt nur hits)
 
     if feedback[1] == 0 #hits
 
@@ -30,7 +30,7 @@ class ColorCheckFeedback
 
       quantity[color_check_guess[0]] = feedback[1] #so oft kommt die Farbe vor
 
-      if feedback[1] < last_feedback.sum
+      if feedback[1] < last_feedback.sum #wenn hits, aber weniger als beim split_guess
 
        included_colors << last_guess[0] #ist included
        included_colors << last_guess[2] #ist included

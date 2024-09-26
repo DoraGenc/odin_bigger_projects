@@ -3,6 +3,7 @@ require_relative 'board.rb'
 require_relative 'players.rb'
 require_relative 'speech.rb'
 require_relative 'colors.rb'
+require_relative 'computer_setter.rb'
 
 require 'colorize'
 
@@ -41,15 +42,13 @@ class Game
   
     until win
       
-     
-      guess = players.guesser.guess # returned guessed_code aus def guess
-
+      guess = players.guesser.guess(feedback.current_blows_and_hits)
+ 
       current_blows_and_hits = feedback.count_blows_and_hits(guess, secret_code)
       board.add_to_board!(guess, current_blows_and_hits, guess_counter)
       board.print_board(guess_counter)
 
       self.guess_counter = guess_counter + 1
-
       win = feedback.check_if_win?(players, guess_counter)
     end 
     announce_result

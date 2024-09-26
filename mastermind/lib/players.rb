@@ -1,5 +1,11 @@
 require_relative 'speech.rb'
 
+require_relative 'guesser.rb'
+require_relative 'setter.rb'
+
+require_relative 'human_guesser.rb'
+require_relative 'computer_guesser.rb'
+
 class Players
 
   attr_reader :guesser, :setter
@@ -23,12 +29,10 @@ class Players
 
       case input
       when 1
-        require_relative 'human_guesser.rb'
         self.guesser = HumanGuesser.new("Human".green, "human")
         valid_input = true
         
       when 2
-        require_relative 'computer_guesser.rb'
         self.guesser = ComputerGuesser.new("Computer".red, "computer")
         valid_input = true
       else
@@ -48,7 +52,7 @@ class Players
   
       case input
         when 1
-          require_relative 'human_setter.rb'
+           require_relative 'human_setter.rb'
           self.setter = HumanSetter.new("Human".green, "human")
           valid_input = true 
         when 2
@@ -59,8 +63,8 @@ class Players
           TypingEffects.standard_typing("Invalid Input. Please only type in the integers 1 or 2.")
       end 
     end
-    TypingEffects.standard_typing("\nEverything set!\n".bold)
-    TypingEffects.standard_typing("You chose the Guesser to be a #{guesser.name} and the Setter to be a #{setter.name}!\n")
+    #TypingEffects.standard_typing("\nEverything set!\n".bold)
+    #TypingEffects.standard_typing("You chose the Guesser to be a #{guesser.name} and the Setter to be a #{setter.name}!\n")
   end
 
 

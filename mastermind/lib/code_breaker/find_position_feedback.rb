@@ -1,6 +1,5 @@
 
-
-class FindPositionFeedback << CodeBreaker
+class FindPositionFeedback
 
   attr_reader :left_color, :right_color
 
