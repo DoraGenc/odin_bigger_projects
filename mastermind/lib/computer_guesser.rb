@@ -1,20 +1,15 @@
-require_relative 'guesser.rb'
-require_relative 'code_breaker/code_breaker.rb'
+require_relative 'guesser'
+require_relative 'code_breaker/code_breaker'
 
 class ComputerGuesser < Guesser
-  
   def initialize(name, type)
     super(name, type)
-
     @code_breaker = CodeBreaker.new
-  end 
-  
+  end
+
   def guess(current_blows_and_hits)
-
-    created_guess = code_breaker.guess(current_blows_and_hits)
-
-    return created_guess
-  end 
+    code_breaker.guess(current_blows_and_hits)
+  end
 
   private
 

@@ -21,7 +21,6 @@ class Board
   end
 
   def print_board(_guess_counter)
-    
     print_header
     print_rows
   end

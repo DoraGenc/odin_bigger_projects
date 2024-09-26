@@ -1,11 +1,11 @@
-
-require_relative 'setter.rb'
 require_relative 'colors.rb'
+require_relative 'setter.rb'
 require_relative 'speech.rb'
+
 
 class HumanSetter < Setter
 
-  attr_reader :name, :type, :created_code
+  attr_reader :name, :type, :created_code #ändern
 
   include Colors
   include TypingEffects
@@ -16,7 +16,6 @@ class HumanSetter < Setter
   end 
   
   def create
-    
     created_code = Array.new
     #TypingEffects.standard_typing("Hi " + "Human! ".bold.green + "Please create your Secret Code. You can type in 4 colors.\nThose are the colors you can choose from:\n\n"); pause
     print_colors

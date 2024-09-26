@@ -1,19 +1,17 @@
-
-require_relative 'setter.rb'
+require_relative 'setter'
 
 class ComputerSetter < Setter
-
   attr_reader :name, :type, :created_code
-  
+
   def initialize(name, type)
     super(name, type)
-    @created_code
-  end 
-  
+  end
+
   def create
-    created_code = Array.new(4) { (0..5).to_a.sample } # 0-7 repräsentiert die Index-Zahlen von COLORS
+    created_code = Array.new(4) { (0..5).to_a.sample }
+    self.created_code = created_code
+
     puts "SECRET CODE IS: #{created_code}"
-    self.created_code = created_code #wieso geht das nur mit self???
   end
 
   private

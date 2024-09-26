@@ -1,11 +1,10 @@
 require_relative 'speech.rb'
 
-require_relative 'guesser.rb'
-require_relative 'setter.rb'
-
 require_relative 'human_guesser.rb'
 require_relative 'computer_guesser.rb'
 require_relative 'human_setter.rb'
+require_relative 'computer_setter.rb'
+
 class Players
 
   attr_reader :guesser, :setter
@@ -52,21 +51,32 @@ class Players
   
       case input
         when 1
-           
           self.setter = HumanSetter.new("Human".green, "human")
           valid_input = true 
+
         when 2
-          require_relative 'computer_setter.rb'
-          self.setter = ComputerSetter.new("Computer".red, "computer") # ohne self funktioniert es nicht, trotz attr_writer?
+          self.setter = ComputerSetter.new("Computer".red, "computer")
           valid_input = true
         else
           TypingEffects.standard_typing("Invalid Input. Please only type in the integers 1 or 2.")
       end 
     end
     #TypingEffects.standard_typing("\nEverything set!\n".bold)
-    #TypingEffects.standard_typing("You chose the Guesser to be a #{guesser.name} and the Setter to be a #{setter.name}!\n")
+    #TypingEffects.standard_typing("You chose the Guesser to be a #{guesser.name} and the Setter to be a #{setter.name}!\n"
   end
+  
 
+  def is_human?(player)
+
+    case player
+    when HumanGuesser
+      true
+    when HumanSetter
+      true
+    else
+      false
+    end 
+  end 
 
   private
 

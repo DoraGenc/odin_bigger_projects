@@ -1,5 +1,4 @@
 class Setter
-
   attr_accessor :win
   attr_reader :name, :type
 
@@ -7,7 +6,7 @@ class Setter
     @name = name
     @type = type
     @win = false
-  end 
+  end
 
   def create(_any)
   end
