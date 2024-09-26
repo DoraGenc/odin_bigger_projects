@@ -10,4 +10,7 @@ class Setter
     @type = type
     @win = false
   end 
+
+  def create(_empty)
+  end
 end
