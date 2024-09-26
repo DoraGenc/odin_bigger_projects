@@ -1,16 +1,11 @@
-require_relative 'players.rb'
-
-class Guesser 
+class Guesser
 
   attr_accessor :win
-  attr_reader :name, :type
+  attr_reader :name
 
   def initialize(name, type)
     @name = name
     @type = type
     @win = false
   end 
-
-  def guess(_any)
-  end
 end 

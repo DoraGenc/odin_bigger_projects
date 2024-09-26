@@ -1,5 +1,3 @@
-require_relative 'players.rb'
-
 class Setter
 
   attr_accessor :win
@@ -11,6 +9,6 @@ class Setter
     @win = false
   end 
 
-  def create(_empty)
+  def create(_any)
   end
 end
