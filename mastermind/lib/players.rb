@@ -5,7 +5,7 @@ require_relative 'setter.rb'
 
 require_relative 'human_guesser.rb'
 require_relative 'computer_guesser.rb'
-
+require_relative 'human_setter.rb'
 class Players
 
   attr_reader :guesser, :setter
@@ -52,7 +52,7 @@ class Players
   
       case input
         when 1
-           require_relative 'human_setter.rb'
+           
           self.setter = HumanSetter.new("Human".green, "human")
           valid_input = true 
         when 2
