@@ -7,6 +7,8 @@ class Wordpicker
   def pick_word
     random_line_index = rand(0..10000)
     random_word = File.readlines(file_path)[random_line_index].chomp
+
+    random_word
   end
 
   private
