@@ -105,13 +105,21 @@ RSpec.describe Board do
     end
   end
 
-  describe "#print_board" do
+  describe "#win?" do
+    context "when the current_state equals the secret_word" do
 
-    before do
-      allow(wordpicker).to receive(:pick_word).and_return(["a"])
-      allow()
-    end
-    context "when printing the board" do
+      before do
+        allow(Wordpicker).to receive(:new).and_return(wordpicker)
+        allow(wordpicker).to receive(:pick_word).and_return("a")
+        allow(board).to receive(:set_secret_word!).and_call_original
+        allow(board).to receive(:initialize_current_state).and_call_original
+      end
+
+      it "returns true" do
+        board.compare_guess("a")
+        board.setup_secret_word
+        expect(board.win?).to eq(true)
+      end
     end
   end
 end

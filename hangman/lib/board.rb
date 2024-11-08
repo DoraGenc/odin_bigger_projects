@@ -36,6 +36,16 @@ class Board
     print "#{what_is_current_state}"
   end
 
+  def win?
+
+    p self.current_state
+    p self.secret_word
+
+    if current_state == secret_word
+      true
+    end
+  end
+
   private
 
   attr_accessor :secret_word, :current_state
@@ -58,7 +68,6 @@ class Board
     number_of_columns = self.secret_word.length
     empty_column = "_"
     self.current_state = Array.new(number_of_columns, empty_column)
-    puts what_is_current_state
   end
 
   def update_board!(index)
