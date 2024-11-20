@@ -68,10 +68,23 @@ class LinkedList
   end
 
   def pop!
+    return nil if head.nil? #wenn komplett leer
+    
+    if head.next_node.nil? #wenn nur 1 Element
+      value = head.value
+      self.head = nil # Liste leeren
+      return value
+    end
+
     current_node = head
-    current_node = current_node.next_node while current_node.next_node
-    current_node.value
-    current_node = nil
+
+    while current_node.next_node
+      previous_node = current_node
+      current_node = current_node.next_node
+    end
+    
+    previous_node.next_node = nil
+    return current_node.value
   end
 
 

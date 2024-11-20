@@ -1,4 +1,5 @@
 require_relative '../lib/linked_list.rb'
+#require 'rspec'
 
 RSpec.describe LinkedList do
 
@@ -161,20 +162,39 @@ RSpec.describe LinkedList do
   end
 
   describe "#pop!" do
-    context "when the linked list contains elements" do
-      it "returns the single last element" do
-        linked_list.append(1)
-        expect(linked_list.pop!.value).to eq(1)
-      end
 
-      it "removes the single last element" do
-        linked_list.append(1)
-        linked_list.pop!
-        expect(linked_list.head).to eq(nil)
+    context "when the list is empty" do
+      it "returns nil" do
+        expect(linked_list.pop!).to eq(nil)
       end
     end
 
-    context "when the linked list does not contain any elements" do
+    context "when the list contains only one element" do
+      it "removes the element" do
+        linked_list.append(1)
+        linked_list.pop!
+        expect(linked_list.at(0)).to eq(nil)
+      end
+
+      it "returns the removed element" do
+        linked_list.append(1)
+        expect(linked_list.pop!).to eq(1)
+      end
+    end
+
+    context "when the linked list contains more than one element" do
+      it "removes the last element" do
+        linked_list.append(1)
+        linked_list.append(2)
+        linked_list.pop!
+        expect(linked_list.head.next_node).to eq(nil)
+      end
+
+      it "returns the removed element" do
+        linked_list.append(1)
+        linked_list.append(2)
+        expect(linked_list.pop!).to eq(2)
+      end
     end
   end
 end
