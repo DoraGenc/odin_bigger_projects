@@ -201,19 +201,37 @@ RSpec.describe LinkedList do
   describe "#contains?" do
     context "when the linked list contains only one element" do
       context "when the searched element is included" do
-     
         it "returns true" do
           linked_list.append(1)
           expect(linked_list.contains?(1)).to eq(true)
         end
       end
+
+      context "when the searched element is inluded" do
+        it "returns false" do
+          linked_list.append(1)
+          expect(linked_list.contains?(2)).to eq(false)
+        end
+      end
     end
 
-      con
-      context "when the searched element is not included" do
+    context "when the linked lists contains more than one element" do
+      context "when the searched element is included" do
 
+        it "returns true" do
+          linked_list.append(1)
+          linked_list.append(2)
+          expect(linked_list.contains?(2)).to eq(true)
+        end
+      end
+
+      context "when the element is not included" do
+        it "returns false" do
+          linked_list.append(1)
+          linked_list.append(2)
+          expect(linked_list.contains?(3)).to eq(false)
+        end
+      end
     end
-
-    context "when the linked list contains more than one element"
   end
 end
