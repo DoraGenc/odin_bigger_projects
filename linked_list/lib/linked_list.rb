@@ -175,6 +175,10 @@ class LinkedList
   end
 
   def remove_at(index)
+
+    unless index.is_a?(Integer) && index > -1
+      return "The index is invalid. Please only enter integers starting from 0."
+    end
     
     if head.nil?
       return "The removal failed. The list is empty."

@@ -381,5 +381,12 @@ RSpec.describe LinkedList do
         expect(linked_list.remove_at(1)).to eq("The removal failed. The list is empty.")
       end
     end
+
+    context "when the index is invalid" do
+      it "returns an error" do
+        invalid_index = -2
+        expect(linked_list.remove_at(invalid_index)).to eq("The index is invalid. Please only enter integers starting from 0.")
+      end
+    end
   end
 end
