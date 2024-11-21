@@ -101,6 +101,23 @@ class LinkedList
     false
   end
 
+  def find(value) 
+
+    index_counter = 0
+    current_node = head
+
+    return nil if current_node == nil
+    return index_counter if current_node.value == value
+
+    while current_node.next_node
+      index_counter += 1
+      current_node = current_node.next_node
+
+      return index_counter if current_node.value == value
+    end
+
+    nil
+  end
 
 
   private

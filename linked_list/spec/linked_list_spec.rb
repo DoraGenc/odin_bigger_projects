@@ -234,4 +234,35 @@ RSpec.describe LinkedList do
       end
     end
   end
+
+  describe "#find" do
+    context "when trying to find an included element" do
+      it "returns the index of the node containing the value" do
+        linked_list.append(1)
+        linked_list.append(2)
+        expect(linked_list.find(2)).to eq(1)
+      end
+    end
+
+    context "when trying to find an excluded element" do
+      it "returns nil" do
+        linked_list.append(1)
+        linked_list.append(2)
+        expect(linked_list.find(3)).to eq(nil)
+      end
+    end
+
+    context "when the list is empty" do
+      it "returns nil" do
+        expect(linked_list.find(1)).to eq(nil)
+      end
+    end
+
+    context "when returning the index of an element that has been found" do
+      it "starts counting at 0" do
+        linked_list.append(1)
+        expect(linked_list.find(1)).to eq(0)
+      end
+    end
+  end
 end
