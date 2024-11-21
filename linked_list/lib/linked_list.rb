@@ -119,6 +119,86 @@ class LinkedList
     nil
   end
 
+  def to_s 
+    current_node = head
+    result = []
+
+    return nil if current_node == nil
+
+    while (current_node || nil)
+      result << "( #{current_node.value} )"
+       result << " -> "
+
+      if current_node.next_node == nil
+        result << "nil"
+      end
+      current_node = current_node.next_node
+    end
+    result = result.join
+
+    print result
+    result
+  end
+
+  def insert_at(index, value)
+
+    if index == 0
+      new_node = Node.new(value)
+      new_node.next_node = head
+      self.head = new_node
+      return
+    end
+
+    current_node = head
+
+    if head == nil
+      new_node = Node.new(value)
+      set_head(new_node)
+    end
+
+    (index - 1).times do #um vor den Zielindex zu navigieren
+      return "The index does not exist." if current_node == nil
+      current_node = current_node.next_node
+    end
+
+    if current_node.nil?
+      prepend(value)
+      return
+    end
+
+    previous_next_node = current_node.next_node
+
+    new_node = Node.new(value) 
+    new_node.next_node = previous_next_node
+
+    current_node.next_node = new_node
+  end
+
+  def remove_at(index)
+    
+    if head.nil?
+      return "The removal failed. The list is empty."
+    end
+
+    if index == 0
+      node_after_removed = head.next_node
+      set_head(node_after_removed)
+      return
+    end
+    
+    current_node = head
+
+    (index - 1).times do #um vor den Zielindex zu navigieren
+      return "The index does not exist." if current_node.next_node.nil?
+      current_node = current_node.next_node
+    end
+ 
+    node_after_removed = current_node.next_node.next_node
+    current_node.next_node = node_after_removed
+  end
+
+  #index negativ?
+
 
   private
 

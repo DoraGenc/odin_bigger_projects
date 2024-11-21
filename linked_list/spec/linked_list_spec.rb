@@ -1,5 +1,4 @@
 require_relative '../lib/linked_list.rb'
-#require 'rspec'
 
 RSpec.describe LinkedList do
 
@@ -262,6 +261,124 @@ RSpec.describe LinkedList do
       it "starts counting at 0" do
         linked_list.append(1)
         expect(linked_list.find(1)).to eq(0)
+      end
+    end
+  end
+
+  describe "#to_s" do
+    context "when printing a linked list in the console" do
+      it "prints out the correct values" do
+        linked_list.append(1)
+        linked_list.append(2)
+        expect(linked_list.to_s).to eq("( 1 ) -> ( 2 ) -> nil")
+      end
+
+      it "can print out long lists" do
+        linked_list.append(1)
+        linked_list.append(2)
+        linked_list.append(3)
+        linked_list.append(4)
+        linked_list.append(5)
+        linked_list.append(6)
+        expect(linked_list.to_s).to eq("( 1 ) -> ( 2 ) -> ( 3 ) -> ( 4 ) -> ( 5 ) -> ( 6 ) -> nil")
+      end
+
+      it "prints out nil when the list is empty" do
+        expect(linked_list.to_s).to eq(nil)
+      end
+
+      it "can print out any value" do
+        linked_list.append("hello")
+        linked_list.append(",.3$")
+        expect(linked_list.to_s).to eq("( hello ) -> ( ,.3$ ) -> nil")
+      end
+    end
+  end
+
+  # Extras
+  
+  describe "#insert_at" do
+    context "when inserting a new node in an already existing list" do
+      it "inserts the value at the correct index" do
+        linked_list.append(1)
+        linked_list.append(2)
+        linked_list.append(3)
+        linked_list.insert_at(1, "new node") #index 1
+        expect(linked_list.to_s).to eq("( 1 ) -> ( new node ) -> ( 2 ) -> ( 3 ) -> nil")
+      end
+
+      context "when the chosen index is 0" do
+        it "inserts the value at the correct index" do
+          linked_list.append(1)
+          linked_list.insert_at(0, "new node")
+          expect(linked_list.to_s).to eq("( new node ) -> ( 1 ) -> nil")
+        end
+      end
+
+      context "when the list is empty" do
+        it "sets creates a new head with the correct value" do
+          linked_list.insert_at(3, "new node")
+          expect(linked_list.to_s).to eq("( new node ) -> nil")
+        end
+      end
+
+      context "when there does not exist something at the chosen index yet" do
+        it "returns an error" do
+          expect(linked_list.insert_at(3, "new node")).to eq("The index does not exist.")
+        end
+      end
+
+      context "when the node is nil at the chosen index" do
+        it "still works correctly & appends a new node" do
+          linked_list.append(1)
+          linked_list.append(2)
+          linked_list.insert_at(1, "new node")
+          expect(linked_list.to_s).to eq("( 1 ) -> ( new node ) -> ( 2 ) -> nil")
+        end
+      end
+    end
+  end
+
+  describe "#remove_at" do
+    context "when removing an existing element at a valid index" do
+      it "removes the element correctly" do
+        linked_list.append(1)
+        linked_list.append(2)
+        linked_list.remove_at(1)
+        expect(linked_list.to_s).to eq("( 1 ) -> nil")
+      end
+    end
+
+    context "when the node to remove is the head" do
+
+      context "when the the list contains one element after the head" do
+        it "removes the element correctly" do
+          linked_list.append(1)
+          linked_list.append(2)
+          linked_list.remove_at(0)
+          expect(linked_list.head.value).to eq(2)
+        end
+      end
+
+      context "when the list does not contain an element after the head" do
+        it "removes the element correctly" do
+          linked_list.append(1)
+          linked_list.remove_at(0)
+          expect(linked_list.to_s).to eq(nil)
+        end
+      end
+    end
+
+    context "when the list does not contain an element at the given index" do
+      it "returns an error" do
+        linked_list.append(1)
+        expect(linked_list.remove_at(3)).to eq("The index does not exist.")
+      end
+    end
+
+    context "when the list is empty" do
+      it "returns an error" do
+        expect(linked_list.remove_at(1)).to eq("The removal failed. The list is empty.")
       end
     end
   end
