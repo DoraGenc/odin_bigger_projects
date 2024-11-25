@@ -25,9 +25,9 @@ class LinkedList
     if head.nil?
       set_head(new_node)
     else
-      current_node = head
-      current_node = current_node.next_node while current_node.next_node # wird beendet, wenn next_node = nil (standardmäßig nil)
-      current_node.next_node = new_node
+      second_node = head
+      new_node.next_node = second_node
+      self.head = new_node
     end
   end
 
@@ -43,7 +43,9 @@ class LinkedList
   end
 
   def tail
-    unless head.nil?
+    current_node = head
+
+    while current_node
       current_node = head
       current_node = current_node.next_node while current_node.next_node # wird beendet, wenn next_node = nil (standardmäßig nil)
       return current_node
@@ -121,7 +123,7 @@ class LinkedList
 
     return nil if current_node.nil?
 
-    while current_node || nil
+    while current_node
       result << "( #{current_node.value} )"
       result << ' -> '
 
@@ -144,12 +146,12 @@ class LinkedList
       return
     end
 
-    current_node = head
-
-    if head.nil?
+    if head.nil? # ändern
       new_node = Node.new(value)
       set_head(new_node)
     end
+
+    current_node = head
 
     (index - 1).times do # um vor den Zielindex zu navigieren
       return 'The index does not exist.' if current_node.nil?
@@ -157,10 +159,7 @@ class LinkedList
       current_node = current_node.next_node
     end
 
-    if current_node.nil?
-      prepend(value)
-      return
-    end
+    # Zeiger anpassen
 
     previous_next_node = current_node.next_node
 
@@ -173,9 +172,9 @@ class LinkedList
   def remove_at(index)
     return 'The index is invalid. Please only enter integers starting from 0.' unless index.is_a?(Integer) && index > -1
 
-    return 'The removal failed. The list is empty.' if head.nil?
+    return 'The removal failed. The list is empty.' if head.nil? # liste leer
 
-    if index == 0
+    if index == 0 # erster knoten soll entfernt werden
       node_after_removed = head.next_node
       set_head(node_after_removed)
       return
@@ -192,8 +191,6 @@ class LinkedList
     node_after_removed = current_node.next_node.next_node
     current_node.next_node = node_after_removed
   end
-
-  # index negativ?
 
   private
 

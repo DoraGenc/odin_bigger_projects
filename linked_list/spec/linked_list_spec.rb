@@ -53,10 +53,10 @@ RSpec.describe LinkedList do
         expect(linked_list).to have_received(:set_head).once
       end
 
-      it 'links the new node to the current last node' do
-        linked_list.append(1)
-        linked_list.append(2)
-        expect(linked_list.head.next_node.value).to eq(2)
+      it 'prepends a new node correctly' do
+        linked_list.append('first head')
+        linked_list.prepend('new node')
+        expect(linked_list.to_s).to eq('( new node ) -> ( first head ) -> nil')
       end
     end
   end
