@@ -48,6 +48,21 @@ RSpec.describe HashMap do
       end
     end
 
+    context "when adding more buckets" do
+
+      before do
+        allow(hashmap).to receive(:capacity).and_return(24)
+      end
+
+      it "creates a correct hashcode" do
+        key = "key"
+        value = "value"
+
+        hashmap.add_more_buckets #24 buckets
+        hashmap.set(key, value)
+      end
+    end
+
     context "when the bucket is empty" do
 
       before do

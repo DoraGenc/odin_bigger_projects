@@ -7,6 +7,7 @@ class HashMap
     @capacity = bucketmanager.capacity
     @load_factor = 0.75
     @edge_capacity = capacity * load_factor
+
   end
 
   def hash(key)
@@ -21,7 +22,7 @@ class HashMap
   def set(key, value)
     add_more_buckets if add_more_buckets?
 
-    hash_code = hash(key) % 16 #0-15 Bucketindex #ÄNDERN!
+    hash_code = hash(key) % capacity
     bucketmanager.set(hash_code, key, value)
   end
 
