@@ -24,9 +24,7 @@ class HashMap
     add_more_buckets if add_more_buckets?
   
     hash_code = hash(key) % capacity
-    puts "Calculated hash code: #{hash_code}"  # Debugging line
     bucketmanager.set(hash_code, key, value)
-    puts "bucketmanager called"
   end
 
   def add_more_buckets?
