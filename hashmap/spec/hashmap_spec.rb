@@ -49,22 +49,26 @@ RSpec.describe HashMap do
     end
 
     context "when adding more buckets" do
-
       before do
         allow(hashmap).to receive(:capacity).and_return(24)
+        allow(hashmap).to receive(:current_capacity).and_return(13)
+        allow(hashmap).to receive(:bucketmanager).and_return(bucketmanager)
+        allow(bucketmanager).to receive(:add_more_buckets!)
+        allow(bucketmanager).to receive(:set)
       end
 
       it "creates a correct hashcode" do
         key = "key"
         value = "value"
+        expected_hashcode = 23
 
         hashmap.add_more_buckets #24 buckets
         hashmap.set(key, value)
+        expect(bucketmanager).to have_received(:set).with(expected_hashcode, key, value)
       end
     end
 
     context "when the bucket is empty" do
-
       before do
         allow(hashmap).to receive(:add_more_buckets?).and_return(false)
         allow(hashmap).to receive(:add_more_buckets)
@@ -81,7 +85,6 @@ RSpec.describe HashMap do
     end
 
     context "when the key int he bucket already contains a value" do
-
       before do
         allow(hashmap).to receive(:add_more_buckets?).and_return(false)
         allow(hashmap).to receive(:add_more_buckets)
@@ -102,7 +105,7 @@ RSpec.describe HashMap do
   describe "#add_more_buckets?" do
     context "when capacity is less than edge_capacity" do
       before do
-        allow(hashmap).to receive(:capacity).and_return(5)
+        allow(hashmap).to receive(:current_capacity).and_return(5)
         allow(hashmap).to receive(:edge_capacity).and_return(10)
       end
     
@@ -113,7 +116,7 @@ RSpec.describe HashMap do
 
     context "when the edge_capacity is reached by the capacity" do
       before do
-        allow(hashmap).to receive(:capacity).and_return(12)
+        allow(hashmap).to receive(:current_capacity).and_return(12)
         allow(hashmap).to receive(:edge_capacity).and_return(10)
       end
 

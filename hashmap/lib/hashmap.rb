@@ -5,6 +5,7 @@ class HashMap
   def initialize
     @bucketmanager = BucketManager.new
     @capacity = bucketmanager.capacity
+    @current_capacity = bucketmanager.current_capacity
     @load_factor = 0.75
     @edge_capacity = capacity * load_factor
 
@@ -21,13 +22,15 @@ class HashMap
 
   def set(key, value)
     add_more_buckets if add_more_buckets?
-
+  
     hash_code = hash(key) % capacity
+    puts "Calculated hash code: #{hash_code}"  # Debugging line
     bucketmanager.set(hash_code, key, value)
+    puts "bucketmanager called"
   end
 
   def add_more_buckets?
-    capacity >= edge_capacity
+    current_capacity >= edge_capacity
   end
 
   def add_more_buckets
@@ -38,5 +41,5 @@ class HashMap
   private
 
   attr_accessor :capacity, :edge_capacity
-  attr_reader :load_factor, :bucketmanager
+  attr_reader :load_factor, :bucketmanager, :current_capacity
 end

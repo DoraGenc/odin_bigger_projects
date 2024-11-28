@@ -68,4 +68,25 @@ RSpec.describe BucketManager do
     end
   end
 
+  describe "#current_capacity" do
+
+    context "when no bucket has a key yet" do
+      it "returns the correct current capacity" do
+        expect(bucketmanager.current_capacity).to eq(0)
+      end
+    end
+
+    context "when some buckets already have a key" do
+      it "returns the correct current capacity" do
+        key = "key"
+        value = "value" 
+        hashcode1 = 0
+        hashcode2 = 2
+
+        bucketmanager.set(hashcode1, key, value)
+        bucketmanager.set(hashcode2, key, value)
+        expect(bucketmanager.current_capacity).to eq(2)
+      end
+    end
+  end
 end
