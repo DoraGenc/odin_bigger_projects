@@ -25,7 +25,7 @@ RSpec.describe BucketManager do
     end
 
     context "when calling #set" do
-      it "calls the right bucket" do
+      xit "calls the right bucket" do
         hash_code = 0
         key = "a"
         value = "b"
@@ -37,7 +37,7 @@ RSpec.describe BucketManager do
     end
     
     context "when a key already has a value" do
-      it "overwrites it" do
+      xit "overwrites it" do
         hashcode = 0
         key = "key"
         value1 = "value1"

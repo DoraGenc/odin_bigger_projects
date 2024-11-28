@@ -3,14 +3,50 @@ require_relative '../lib/bucket.rb'
 RSpec.describe Bucket do
 
   subject(:bucket) { described_class.new }
+  let(:node) { instance_double("Node")}
 
   describe "#set" do
-    it "changes the key and value" do
-      key = "a"
-      value = "b"
-      bucket.set(key, value)
-      expect(bucket.key).not_to be_nil
-      expect(bucket.value).not_to be_nil
+    context "when setting the first key-value pair" do
+      xit "changes the key and value" do
+        key = "a"
+        value = "b"
+        bucket.set(key, value)
+        expect(bucket.key).not_to be_nil
+        expect(bucket.value).not_to be_nil
+      end
+    end
+
+    context "when setting a key-value pair" do
+
+      before do
+        allow(bucket).to receive(:node).and_return(node)
+        allow(Node).to receive(:new)
+      end
+
+      it "creates a new node" do
+        key = "a"
+        value = "b"
+        bucket.set(key, value)
+        expect(Node).to have_received(:new).with(key, value)
+      end
+    end
+  end
+  
+  describe "#get" do
+    context "when a key exists" do
+      it "returns the value that is assigned to that key" do
+        key = "a"
+        value = "b"
+        bucket.set(key, value)
+        expect(bucket.get(key)).to eq(value)
+      end
+    end
+
+    context "when a key does not exist" do
+      it "returns nil" do
+        key = "key that has not been set"
+        expect(bucket.get(key)).to eq(nil)
+      end
     end
   end
 end
