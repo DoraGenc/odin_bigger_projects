@@ -6,18 +6,8 @@ RSpec.describe Bucket do
   let(:node) { instance_double("Node")}
 
   describe "#set" do
-    context "when setting the first key-value pair" do
-      xit "changes the key and value" do
-        key = "a"
-        value = "b"
-        bucket.set(key, value)
-        expect(bucket.key).not_to be_nil
-        expect(bucket.value).not_to be_nil
-      end
-    end
 
     context "when setting a key-value pair" do
-
       before do
         allow(bucket).to receive(:node).and_return(node)
         allow(Node).to receive(:new)
@@ -28,6 +18,15 @@ RSpec.describe Bucket do
         value = "b"
         bucket.set(key, value)
         expect(Node).to have_received(:new).with(key, value)
+      end
+    end
+
+    context "when setting the first key-value pair" do
+      it "creates a new node with correct values" do
+        key = "a"
+        value = "b"
+        bucket.set(key, value)
+        expect(bucket.get(key)).to eq(value)
       end
     end
   end

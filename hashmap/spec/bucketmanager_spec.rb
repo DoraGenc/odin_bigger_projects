@@ -25,19 +25,18 @@ RSpec.describe BucketManager do
     end
 
     context "when calling #set" do
-      xit "calls the right bucket" do
+      it "calls the right bucket" do
         hash_code = 0
         key = "a"
         value = "b"
 
         bucketmanager.set(hash_code, key, value)
-        expect(bucket_0.key).to eq(key)   
-        expect(bucket_0.value).to eq(value)
+        expect(bucket_0.get(key)).to eq(value)
       end
     end
     
     context "when a key already has a value" do
-      xit "overwrites it" do
+      it "overwrites it" do
         hashcode = 0
         key = "key"
         value1 = "value1"
@@ -45,7 +44,7 @@ RSpec.describe BucketManager do
       
         bucketmanager.set(hashcode, key, value1)
         bucketmanager.set(hashcode, key, value2)
-        expect(bucket_0.value).to eq(value2)
+        expect(bucket_0.get(key)).to eq(value2)
       end
     end
   end
