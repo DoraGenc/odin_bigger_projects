@@ -95,4 +95,143 @@ RSpec.describe Bucket do
       end
     end
   end
+
+  describe "#is_head?" do
+    context "when a given key is the head" do
+      it "returns true" do
+        key = "a"
+        value = "b"
+        bucket.set(key, value)
+
+        expect(bucket.is_head?(key)).to eq(true)
+      end
+    end
+
+    context "when a given key is not the head" do
+      it "returns false" do
+        non_existent_key = 1
+
+        expect(bucket.is_head?(non_existent_key)).to eq(false)
+      end
+    end
+  end
+
+  describe "#exists?" do
+    context "when a key exists" do
+      context "when a key is the head" do
+        it "returns true" do
+          key = "a"
+          value = "b"
+          bucket.set(key, value)
+
+          expect(bucket.exists?(key)).to eq(true)
+        end
+      end
+      
+      context "when a key is not the head" do
+        it "returns true" do
+          key1 = "carlos"
+          value1 = 1
+          bucket.set(key1, value1)
+
+          key2 = "carla"
+          value2 = 2
+          bucket.set(key2, value2)
+
+          expect(bucket.exists?(key2)).to eq(true)
+        end
+      end
+    end
+
+    context "when a key does not exist" do
+      it "returns false" do
+        non_existent_key = 1
+        expect(bucket.exists?(non_existent_key)).to eq(false)
+      end
+    end
+  end
+
+  describe "#find" do
+    context "when a given key exists" do
+      context "when the key is the head" do
+        it "returns the right index" do
+          key = "a"
+          value = "b"
+          bucket.set(key, value)
+
+          expect(bucket.find(key)).to eq(0)
+        end
+      end
+
+      context "when a given key is not the head" do
+        it "returns the right index" do
+          key1 = "carlos"
+          value1 = 1
+          bucket.set(key1, value1)
+
+          key2 = "carla"
+          value2 = 2
+          bucket.set(key2, value2)
+
+          expect(bucket.find(key2)).to eq(1)
+        end
+      end
+    end
+
+    context "when a given key does not exist" do
+      it "returns nil" do
+        non_existent_key = 1
+        expect(bucket.find(non_existent_key)).to eq(nil)
+      end
+    end
+  end
+
+  describe "#delete" do
+    context "when the given key is the head" do
+      it "sets head to nil" do
+        key = "a"
+        value = "b"
+        bucket.set(key, value)
+        bucket.delete(key)
+
+        expect(bucket.head?).to eq(false)
+      end
+
+      it "returns the deleted value" do
+        key = "a"
+        value = "b"
+        bucket.set(key, value)
+        expect(bucket.delete(key)).to eq(value)
+      end
+    end
+
+    context "when the given key is not the head" do
+      it "deletes the key" do
+        key1 = "carlos"
+        value1 = 1
+        bucket.set(key1, value1)
+
+        key2 = "carla"
+        value2 = 2
+        bucket.set(key2, value2)
+
+        bucket.delete(key2)
+        expect(bucket.exists?(key2)).to eq(false)
+      end
+
+      it "only deletes the given key" do
+        key1 = "carlos"
+        value1 = 1
+        bucket.set(key1, value1)
+
+        key2 = "carla"
+        value2 = 2
+        bucket.set(key2, value2)
+
+        bucket.delete(key2)
+        expect(bucket.exists?(key1)).to eq(true)
+        expect(bucket.exists?(key2)).to eq(false)
+      end
+    end
+  end
 end

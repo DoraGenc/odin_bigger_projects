@@ -4,6 +4,7 @@ RSpec.describe BucketManager do
 
   subject(:bucketmanager) { described_class.new }
   let(:bucket) { instance_double("Bucket") }
+  let(:buckets) { Array.new(16) { instance_double("Bucket") } }
 
   describe "#initialize" do
     before do
@@ -140,6 +141,56 @@ RSpec.describe BucketManager do
         random_hash_code = 0
 
         expect(bucketmanager.has?(non_existent_key, random_hash_code)).to eq(false)
+      end
+    end
+  end
+
+  describe "#delete" do
+    context "when deleting" do
+      before do
+        allow(bucketmanager).to receive(:buckets).and_return(buckets)
+        allow(buckets).to receive(:[]).with(1).and_return(bucket)
+        allow(bucket).to receive(:delete)
+      end
+  
+      it "calls the right bucket" do
+        key = "a"
+        value = "b"
+        hash_code = 1
+  
+        bucketmanager.delete(key, hash_code)
+        expect(bucket).to have_received(:delete).with(key)
+      end
+    end
+
+    context "when a given key exists" do
+      it "deletes the right bucket" do
+        key = "a"
+        value = "b"
+        hash_code = 1
+
+        bucketmanager.set(hash_code, key, value)
+        expect(bucketmanager.has?(key, hash_code)).to eq(true)
+        bucketmanager.delete(key, hash_code)
+        expect(bucketmanager.has?(key, hash_code)).to eq(false)
+      end
+    end
+
+    context "when a given key does not exist" do
+      it "returns an error" do
+        non_existent_key = "a"
+        random_hash_code = 1
+
+        expect(bucketmanager.delete(non_existent_key, random_hash_code)).to eq("The key does not exist.")
+      end
+    end
+
+    context "when a given key is nil" do
+      it "returns an error" do
+        invalid_key = nil
+        random_hash_code = 1
+
+        expect(bucketmanager.delete(invalid_key, random_hash_code)).to eq("The key does not exist.")
       end
     end
   end

@@ -43,11 +43,17 @@ class HashMap
 
   def has?(key)
     hashcode = hash(key) % capacity
-    
+
     return true if bucketmanager.has?(key, hashcode)
     false
   end
 
+  def delete(key)
+    return "The key does not exist." if key.nil? || !has?(key)
+    hashcode = hash(key) % capacity
+
+    bucketmanager.delete(key, hashcode)
+  end
 
   private
 

@@ -206,4 +206,88 @@ RSpec.describe HashMap do
       end
     end
   end
+
+  describe "#remove" do
+    context "when a key exists" do
+      context "when a key is the head" do
+
+        before do
+          allow(hashmap).to receive(:bucketmanager).and_call_original
+        end
+
+        it "removes an entry" do
+          key = "a"
+          value = "b"
+          hashmap.set(key, value)
+          hashmap.delete(key)
+
+          expect(hashmap.has?(key)).to eq(false)
+        end
+
+        it "returns the deleted value" do
+          key = "a"
+          value = "b"
+          hashmap.set(key, value)
+          expect(hashmap.delete(key)).to eq(value)
+        end
+      end
+
+      context "when a key is not the head" do
+        before do
+          allow(hashmap).to receive(:bucketmanager).and_call_original
+        end
+
+        it "removes an entry" do
+          key1 = "carlos"
+          value1 = 1
+          hashmap.set(key1, value1)
+
+          key2 = "carla"
+          value2 = 2
+          hash_code2 = 9
+          hashmap.set(key2, value2)
+
+          hashmap.delete(key2)
+          expect(hashmap.has?(key2)).to eq(false)
+        end
+
+        it "returns the deleted value" do
+          key1 = "carlos"
+          value1 = 1
+          hashmap.set(key1, value1)
+
+          key2 = "carla"
+          value2 = 2
+          hashmap.set(key2, value2)
+
+          expect(hashmap.delete(key2)).to eq(value2)
+        end
+      end
+    end
+
+    context "when a given key does not exist" do
+      before do
+        allow(bucketmanager).to receive(:delete)
+        allow(bucketmanager).to receive(:has?).and_return(false)
+      end
+
+      it "returns an error" do
+        non_existent_key = "a"
+
+        expect(hashmap.delete(non_existent_key)).to eq("The key does not exist.")
+      end
+    end
+
+    context "when a given key is nil" do
+      before do
+        allow(bucketmanager).to receive(:delete)
+      end
+
+      it "returns an error" do
+        invalid_key = nil
+
+        expect(hashmap.delete(invalid_key)).to eq("The key does not exist.")
+      end
+    end
+  end
 end
