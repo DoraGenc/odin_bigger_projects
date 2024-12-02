@@ -142,7 +142,6 @@ RSpec.describe HashMap do
 
   describe "#get" do
 
-
     context "when the key exists" do
       before do
         allow(hashmap).to receive(:bucketmanager).and_return(bucketmanager)
@@ -170,6 +169,18 @@ RSpec.describe HashMap do
           hashmap.set(key, value)
           expect(hashmap.get(key)).to eq(value)
         end
+      end
+    end
+
+    context "when a key does not exist" do
+
+      before do
+        allow(bucketmanager).to receive(:get)
+      end
+
+      it "returns nil" do
+        non_existent_key = "1"
+        expect(hashmap.get(non_existent_key)).to eq(nil)
       end
     end
   end
