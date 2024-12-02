@@ -256,4 +256,31 @@ RSpec.describe Bucket do
       end
     end
   end
+
+  describe "#keys" do
+    context "when the bucket contains elements" do
+      before do
+        key1 = "carlos"
+        value1 = 1
+        bucket.set(key1, value1)
+
+        key2 = "carla"
+        value2 = 2
+        bucket.set(key2, value2)
+      end
+
+      it "returns an array containing all keys" do
+        key1 = "carlos"
+        key2 = "carla"
+
+        expect(bucket.keys).to eq([key1, key2])
+      end
+    end
+
+    context "when the bucket does not contain any elements" do
+      it "returns an empty array" do
+        expect(bucket.keys).to eq([])
+      end
+    end
+  end
 end

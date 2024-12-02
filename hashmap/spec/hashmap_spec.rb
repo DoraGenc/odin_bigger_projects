@@ -320,4 +320,74 @@ RSpec.describe HashMap do
       end
     end
   end
+
+  describe "#clear" do
+
+    before do
+      allow(hashmap).to receive(:bucketmanager).and_call_original
+    end
+
+    context "when entries exist already" do
+      before do
+        key1 = "carlos"
+        value1 = 1
+        hashmap.set(key1, value1)
+
+        key2 = "carla"
+        value2 = 2
+        hashmap.set(key2, value2)
+      end
+
+      it "clears all entries" do
+        hashmap.clear
+        expect(hashmap.length).to eq(0)
+      end
+    end
+
+    context "when no entries exist" do
+      it "clears all entries" do
+        hashmap.clear
+        expect(hashmap.length).to eq(0)
+      end
+    end
+  end
+
+  describe "#keys" do
+
+    before do
+      allow(hashmap).to receive(:bucketmanager).and_call_original
+    end
+
+    context "when entries exist already" do
+      before do
+        key1 = "carlos"
+        value1 = 1
+        bucketmanager.set(key1, value1)
+
+        key2 = "carla"
+        value2 = 2
+        bucketmanager.set(key2, value2)
+      end
+      
+      it "returns an array of all keys" do
+        key1 = "carlos"
+        key2 = "carla"
+
+        expect(bucketmanager.keys).to eq([key1, key2])
+      end
+    end
+
+    context "when no entries exist yet" do
+
+      before do
+        allow(hashmap).to receive(:bucketmanager).and_call_original
+      end
+
+      it "returns an empty array" do
+        expect(bucketmanager.keys).to eq([])
+      end
+    end
+  end
 end
+
+#ändern

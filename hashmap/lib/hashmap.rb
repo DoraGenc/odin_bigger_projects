@@ -59,6 +59,10 @@ class HashMap
     bucketmanager.length
   end
 
+  def clear
+    bucketmanager.clear
+  end
+
   private
 
   attr_accessor :capacity, :edge_capacity
