@@ -139,4 +139,38 @@ RSpec.describe HashMap do
       end
     end
   end
+
+  describe "#get" do
+
+
+    context "when the key exists" do
+      before do
+        allow(hashmap).to receive(:bucketmanager).and_return(bucketmanager)
+        allow(bucketmanager).to receive(:get)
+      end
+
+      it "calls the bucketmanager" do
+        key = "a"
+        value = "b"
+        hashmap.set(key, value)
+        hashmap.get(key)
+
+        expect(bucketmanager).to have_received(:get)
+      end
+      
+      context "when trying to access a key's value" do
+        before do
+          allow(hashmap).to receive(:bucketmanager).and_call_original
+        end
+
+        it "returns the assigned value" do
+          key = "a"
+          value = "b"
+          hashcode = 
+          hashmap.set(key, value)
+          expect(hashmap.get(key)).to eq(value)
+        end
+      end
+    end
+  end
 end

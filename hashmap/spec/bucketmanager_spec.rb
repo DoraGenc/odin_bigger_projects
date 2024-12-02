@@ -3,6 +3,7 @@ require_relative '../lib/bucketmanager'
 RSpec.describe BucketManager do
 
   subject(:bucketmanager) { described_class.new }
+  let(:bucket) { instance_double("Bucket") }
 
   describe "#initialize" do
     before do
@@ -18,10 +19,10 @@ RSpec.describe BucketManager do
   end
 
   describe "#set" do
-    let(:bucket_0) { Bucket.new }
+    let(:bucket) { Bucket.new }
 
     before do
-      allow(bucketmanager).to receive(:buckets).and_return([bucket_0])
+      allow(bucketmanager).to receive(:buckets).and_return([bucket])
     end
 
     context "when calling #set" do
@@ -31,20 +32,7 @@ RSpec.describe BucketManager do
         value = "b"
 
         bucketmanager.set(hash_code, key, value)
-        expect(bucket_0.get(key)).to eq(value)
-      end
-    end
-    
-    context "when a key already has a value" do
-      it "overwrites it" do
-        hashcode = 0
-        key = "key"
-        value1 = "value1"
-        value2 = "value2"
-      
-        bucketmanager.set(hashcode, key, value1)
-        bucketmanager.set(hashcode, key, value2)
-        expect(bucket_0.get(key)).to eq(value2)
+        expect(bucket.get(key)).to eq(value)
       end
     end
   end
@@ -85,6 +73,51 @@ RSpec.describe BucketManager do
         bucketmanager.set(hashcode1, key, value)
         bucketmanager.set(hashcode2, key, value)
         expect(bucketmanager.current_capacity).to eq(2)
+      end
+    end
+  end
+
+  describe "#get" do
+    context "when the given key exists" do
+      
+    before do
+      allow(bucketmanager).to receive(:buckets).and_return([bucket])
+      allow(bucket).to receive(:set)
+      allow(bucket).to receive(:get)
+    end
+
+      it "calls the right bucket" do
+        key = "a"
+        value = "b"
+        hash_code = 0
+  
+        bucketmanager.set(hash_code, key, value)
+        bucketmanager.get(key, hash_code)
+  
+        expect(bucket).to have_received(:get).with(key)
+      end
+
+      context "when accessing a bucket" do
+        before do
+          allow(bucketmanager).to receive(:buckets).and_call_original
+        end
+
+        it "returns the right value" do
+          key = "a"
+          value = "b"
+          hash_code = 0
+    
+          bucketmanager.set(hash_code, key, value)
+          expect(bucketmanager.get(key, hash_code)).to eq(value)
+        end
+      end
+    end
+
+    context "when the given key does not exist" do
+      it "returns nil" do
+        non_existent_key = 1
+        random_hash_code = 0
+        expect(bucketmanager.get(non_existent_key, random_hash_code)).to eq(nil)
       end
     end
   end

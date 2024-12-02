@@ -35,6 +35,11 @@ class HashMap
     bucketmanager.add_more_buckets!
   end
 
+  def get(key)
+    hashcode = hash(key) % capacity
+    return_value = bucketmanager.get(key, hashcode)
+  end
+
 
   private
 

@@ -81,6 +81,18 @@ RSpec.describe Bucket do
     end
 
     context "when more than one key exists in the bucket" do
+      it "returns the value that is assigned to a new key" do
+        key1 = "carlos"
+        value1 = 1
+        bucket.set(key1, value1)
+
+        key2 = "carla"
+        value2 = 2
+        bucket.set(key2, value2)
+
+        expect(bucket.get(key1)).to eq(value1)
+        expect(bucket.get(key2)).to eq(value2)
+      end
     end
   end
 end
