@@ -121,4 +121,26 @@ RSpec.describe BucketManager do
       end
     end
   end
+
+  describe "#has?" do
+    context "when a key exists" do
+      it "returns true" do
+        key = "a"
+        value = "b"
+        hash_code = 0
+  
+        bucketmanager.set(hash_code, key, value)
+        expect(bucketmanager.has?(key, hash_code)).to eq(true)
+      end
+    end
+
+    context "when a key does not exist" do
+      it "returns false" do
+        non_existent_key = 1
+        random_hash_code = 0
+
+        expect(bucketmanager.has?(non_existent_key, random_hash_code)).to eq(false)
+      end
+    end
+  end
 end

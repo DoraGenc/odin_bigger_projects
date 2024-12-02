@@ -41,6 +41,13 @@ class HashMap
     return_value = bucketmanager.get(key, hashcode)
   end
 
+  def has?(key)
+    hashcode = hash(key) % capacity
+    
+    return true if bucketmanager.has?(key, hashcode)
+    false
+  end
+
 
   private
 

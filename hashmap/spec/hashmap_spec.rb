@@ -184,4 +184,26 @@ RSpec.describe HashMap do
       end
     end
   end
+
+  describe "#has?" do
+    before do
+      allow(hashmap).to receive(:bucketmanager).and_call_original
+    end
+
+    context "when a key exists" do
+      it "returns true" do
+        key = "a"
+        value = "b"
+        hashmap.set(key, value)
+        expect(hashmap.has?(key)).to eq(true)
+      end
+    end
+
+    context "when a key does not exist" do
+      it "returns false" do
+        non_existent_key = "a"
+        expect(hashmap.has?(non_existent_key)).to eq(false)
+      end
+    end
+  end
 end
