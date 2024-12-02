@@ -55,6 +55,10 @@ class HashMap
     bucketmanager.delete(key, hashcode)
   end
 
+  def length
+    bucketmanager.length
+  end
+
   private
 
   attr_accessor :capacity, :edge_capacity

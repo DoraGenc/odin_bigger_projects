@@ -194,4 +194,30 @@ RSpec.describe BucketManager do
       end
     end
   end
+
+  describe "#length" do
+    context "when some entries already exist" do
+      before do
+        key1 = "carlos"
+        value1 = 1
+        hashcode1 = 0
+        bucketmanager.set(hashcode1, key1, value1)
+
+        key2 = "carla"
+        value2 = 2
+        hashcode2 = 1
+        bucketmanager.set(hashcode2, key2, value2)
+      end
+
+      it "returns the correct length" do
+        expect(bucketmanager.length).to eq(2)
+      end
+    end
+
+    context "when no entries exist" do
+      it "returns 0" do
+        expect(bucketmanager.length).to eq(0)
+      end
+    end
+  end
 end

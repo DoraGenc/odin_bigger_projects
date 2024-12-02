@@ -234,4 +234,26 @@ RSpec.describe Bucket do
       end
     end
   end
+
+  describe "#length" do
+    context "when the bucket contains elements" do
+      it "counts the nodes in the bucket" do
+        key1 = "carlos"
+        value1 = 1
+        bucket.set(key1, value1)
+
+        key2 = "carla"
+        value2 = 2
+        bucket.set(key2, value2)
+
+        expect(bucket.length).to eq(2)
+      end
+    end
+
+    context "when the bucket does not contain elements" do
+      it "returns 0" do
+        expect(bucket.length).to eq(0)
+      end
+    end
+  end
 end

@@ -290,4 +290,34 @@ RSpec.describe HashMap do
       end
     end
   end
+
+  describe "#length" do
+
+    before do
+      allow(hashmap).to receive(:bucketmanager).and_call_original
+    end
+
+    context "when some entries already exist" do
+      before do
+        key1 = "carlos"
+        value1 = 1
+        hashmap.set(key1, value1)
+
+        key2 = "carla"
+        value2 = 2
+        hash_code2 = 9
+        hashmap.set(key2, value2)
+      end
+
+      it "returns the correct length" do
+        expect(hashmap.length).to eq(2)
+      end
+    end
+
+    context "when no entries exist" do
+      it "returns 0" do
+        expect(hashmap.length).to eq(0)
+      end
+    end
+  end
 end
