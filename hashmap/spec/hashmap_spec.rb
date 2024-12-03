@@ -388,6 +388,43 @@ RSpec.describe HashMap do
       end
     end
   end
+
+  describe "#values" do
+
+    before do
+      allow(hashmap).to receive(:bucketmanager).and_call_original
+    end
+
+    context "when entries exist already" do
+      before do
+        key1 = "carlos"
+        value1 = 1
+        hashmap.set(key1, value1)
+
+        key2 = "carla"
+        value2 = 2
+        hashmap.set(key2, value2)
+      end
+      
+      it "returns an array of all keys" do
+        value1 = 1
+        value2 = 2
+
+        expect(hashmap.values).to eq([value2, value1])
+      end
+    end
+
+    context "when no entries exist yet" do
+
+      before do
+        allow(hashmap).to receive(:bucketmanager).and_call_original
+      end
+
+      it "returns an empty array" do
+        expect(hashmap.values).to eq([])
+      end
+    end
+  end
 end
 
 #ändern

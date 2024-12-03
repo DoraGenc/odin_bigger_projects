@@ -67,6 +67,10 @@ class HashMap
     bucketmanager.keys
   end
 
+  def values
+    bucketmanager.values
+  end
+
   private
 
   attr_accessor :capacity, :edge_capacity
