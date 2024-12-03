@@ -283,4 +283,25 @@ RSpec.describe Bucket do
       end
     end
   end
+
+  describe "#values" do
+    context "when entries already exist" do
+
+      before do
+        key1 = "carlos"
+        value1 = 1
+        bucket.set(key1, value1)
+      end
+
+      it "returns an array of all values in the bucket" do
+        expect(bucket.values).to eq([1])
+      end
+    end
+
+    context "when the bucket does not contain any elements" do
+      it "returns an empty array" do
+        expect(bucket.values).to eq([])
+      end
+    end
+  end
 end
