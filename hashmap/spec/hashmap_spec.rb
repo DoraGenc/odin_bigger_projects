@@ -362,18 +362,18 @@ RSpec.describe HashMap do
       before do
         key1 = "carlos"
         value1 = 1
-        bucketmanager.set(key1, value1)
+        hashmap.set(key1, value1)
 
         key2 = "carla"
         value2 = 2
-        bucketmanager.set(key2, value2)
+        hashmap.set(key2, value2)
       end
       
       it "returns an array of all keys" do
         key1 = "carlos"
         key2 = "carla"
 
-        expect(bucketmanager.keys).to eq([key1, key2])
+        expect(hashmap.keys).to eq([key2, key1])
       end
     end
 
@@ -384,7 +384,7 @@ RSpec.describe HashMap do
       end
 
       it "returns an empty array" do
-        expect(bucketmanager.keys).to eq([])
+        expect(hashmap.keys).to eq([])
       end
     end
   end
