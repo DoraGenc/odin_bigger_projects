@@ -277,4 +277,33 @@ RSpec.describe BucketManager do
       end
     end
   end
+
+  describe "#values" do
+    context "when entries exist already" do
+      before do
+        key1 = "carlos"
+        value1 = 1
+        hashcode1 = 0
+        bucketmanager.set(hashcode1, key1, value1)
+
+        key2 = "carla"
+        value2 = 2
+        hashcode2 = 1
+        bucketmanager.set(hashcode2, key2, value2)
+      end
+      
+      it "returns an array of all keys" do
+        value1 = 1
+        value2 = 2
+
+        expect(bucketmanager.values).to eq([value1, value2])
+      end
+    end
+
+    context "when no entries exist yet" do
+      it "returns an empty array" do
+        expect(bucketmanager.values).to eq([])
+      end
+    end
+  end
 end
