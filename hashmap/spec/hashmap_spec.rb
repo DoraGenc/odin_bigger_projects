@@ -425,6 +425,47 @@ RSpec.describe HashMap do
       end
     end
   end
+
+  describe "#entries" do
+
+    context "when no entries exist yet" do
+      before do
+        allow(bucketmanager).to receive(:entries)
+      end
+
+      it "calls the bucketmanagers entries method" do
+        hashmap.entries
+        expect(bucketmanager).to have_received(:entries)
+      end
+    end
+
+    context "when entries exist already" do
+      before do
+        allow(hashmap).to receive(:bucketmanager).and_call_original
+
+        key1 = "carlos"
+        value1 = 1
+        hashmap.set(key1, value1)
+
+        key2 = "carla"
+        value2 = 2
+        hashmap.set(key2, value2)
+      end
+
+      it "returns an array of all entries" do
+        expect(hashmap.entries).to eq([["carla", 2], ["carlos", 1]])
+      end
+    end
+
+    context "when no entries exist" do
+      before do
+        allow(hashmap).to receive(:bucketmanager).and_call_original
+      end
+      
+      it "returns an empty array" do
+        expect(hashmap.entries).to eq([])
+      end
+    end
+  end
 end
 
-#ändern

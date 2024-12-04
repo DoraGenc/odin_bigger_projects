@@ -304,4 +304,41 @@ RSpec.describe Bucket do
       end
     end
   end
+
+  describe "#entries" do
+    context "when an entry already exists" do
+      before do
+        key1 = "carlos"
+        value1 = 1
+        bucket.set(key1, value1)
+      end
+
+      it "returns an array of all values and keys that belong together" do
+        expect(bucket.entries).to eq([["carlos", 1]])
+      end
+    end
+
+    context "when more than one entry already exists" do
+    
+      before do
+        key1 = "carlos"
+        value1 = 1
+        bucket.set(key1, value1)
+
+        key2 = "carla"
+        value2 = 2
+        bucket.set(key2, value2)
+      end
+
+      it "returns an array of all values and keys that belong together" do
+        expect(bucket.entries).to eq([["carlos", 1], ["carla", 2]])
+      end
+    end
+
+    context "when no entries exist" do
+      it "returns an empty array" do
+        expect(bucket.entries).to eq([])
+      end
+    end
+  end
 end
