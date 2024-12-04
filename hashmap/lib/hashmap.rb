@@ -71,7 +71,7 @@ class HashMap
   end
 
   def entries
-    entries = bucketmanager.entries
+    bucketmanager.entries
   end
 
   private
