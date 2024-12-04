@@ -29,7 +29,6 @@ RSpec.describe Bucket do
     end
 
     context "when a key-value pair is already set" do
-
       it "can link a new node to the head of the list" do
         key1 = "carlos"
         value1 = 1
@@ -58,6 +57,21 @@ RSpec.describe Bucket do
         expect(bucket.get(key1)).to eq(value1)
         expect(bucket.get(key2)).to eq(value2)
         expect(bucket.get(key3)).to eq(value3)
+      end
+    end
+
+    context "when a key already exists" do
+      before do
+        key1 = "carlos"
+        value1 = 1
+        bucket.set(key1, value1)
+      end
+
+      it "overwrites it" do
+        key1 = "carlos"
+        new_value = 2
+        bucket.set(key1, new_value)
+        expect(bucket.entries).to eq([["carlos", 2]])
       end
     end
   end

@@ -8,7 +8,6 @@ class HashMap
     @current_capacity = bucketmanager.current_capacity
     @load_factor = 0.75
     @edge_capacity = capacity * load_factor
-
   end
 
   def hash(key)
