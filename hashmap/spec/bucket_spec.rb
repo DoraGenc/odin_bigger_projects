@@ -1,12 +1,10 @@
 require_relative '../lib/bucket.rb'
 
 RSpec.describe Bucket do
-
-  subject(:bucket) { described_class.new }
+  let(:bucket) { described_class.new }
   let(:node) { instance_double("Node")}
 
   describe "#set" do
-
     context "when no key-value pair is set yet" do
       before do
         allow(bucket).to receive(:node).and_return(node)
@@ -333,7 +331,6 @@ RSpec.describe Bucket do
     end
 
     context "when more than one entry already exists" do
-    
       before do
         key1 = "carlos"
         value1 = 1
