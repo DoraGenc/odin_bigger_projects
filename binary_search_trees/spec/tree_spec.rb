@@ -108,18 +108,6 @@ RSpec.describe Tree do
     end
   end
 
-  describe "#find" do
-    context "when a tree exists" do
-      let(:tree) { described_class.new([1, 2, 3, 4, 5, 6, 7, 8, 9])}
-
-      context "when a value exists" do
-        xit "returns the node with the value searched for" do
-          expect(tree.find(5)).to eq(tree.root)
-        end
-      end
-    end
-  end
-
   describe "#find_node" do
     context "when a tree exists" do
       let(:tree) { described_class.new([1, 2, 3])}
@@ -205,14 +193,60 @@ RSpec.describe Tree do
         end
       end
 
-      context "when adding a node to a leaf node (no children)" do
-        xit "adds a child to the right position" do
-          new_tree = Tree.new([1, 2, 3])
-          new_tree.build_tree
-          new_tree.insert(2.5)
+      context "when adding a leaf" do
+        it "adds a node with the correct value" do
+          tree.insert(2.5)
 
-          expect(new_tree.root.right_children.right_children.value).to eq(2.5)
+          expect(tree.node_exists?(2.5)).to eq(true)
         end
+
+        it "links a child to the right node" do
+          tree.insert(2.5)
+
+          target_node_value = tree.root.left_children.left_children.right_children.value
+          expect(target_node_value).to eq(2.5)
+        end
+      end
+
+      context "when trying to append and already existing value" do
+        it "does not change anything" do
+          previous_root = tree.root
+          tree.insert(8)
+
+          new_root = tree.root
+          expect(previous_root).to eq(new_root)
+        end
+      end
+    end
+
+    context "when the root is nil" do
+      it "returns nil" do
+        empty_tree = Tree.new
+
+        expect(empty_tree.insert(1)).to eq(nil)
+      end
+    end
+  end
+
+  describe "#node_exists?" do
+    let(:tree) { described_class.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) }
+
+    context "when a value is assigned to a node" do
+      it "returns true" do
+        expect(tree.node_exists?(5)).to eq(true)
+      end
+    end
+
+    context "when a value is not assigned to a node" do
+      it "returns false" do
+        expect(tree.node_exists?(0)).to eq(false)
+      end
+    end
+
+    context "when a root does not exist" do
+      it "returns false" do
+        empty_tree = Tree.new
+        expect(empty_tree.node_exists?(1)).to eq(false)
       end
     end
   end
