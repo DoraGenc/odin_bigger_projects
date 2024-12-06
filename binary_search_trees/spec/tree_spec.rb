@@ -160,8 +160,9 @@ RSpec.describe Tree do
       context "when the tree is larger" do
         it "returns the correct node" do
           large_tree = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])
+
           searched_value = 10
-          returned_node =  tree.find_node(searched_value)
+          returned_node =  large_tree.find_node(searched_value)
           correct_returned_node_value = 9
 
           expect(returned_node.value).to eq(correct_returned_node_value)
