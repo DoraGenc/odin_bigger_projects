@@ -262,10 +262,11 @@ RSpec.describe Tree do
       end
     end
 
-    context "when the node to delete is a leaf" do
+    context "when the node to delete is a leaf" do #hier
       it "deletes the leaf" do
+        tree.pretty_print
         tree.delete(1)
-
+        tree.pretty_print
         expect(tree.node_exists?(1)).to eq(false)
       end
     end
@@ -284,8 +285,10 @@ RSpec.describe Tree do
       end
 
       it "links its children to the correct node" do
+        tree.pretty_print
         tree.delete(2)
         orphaned_child_value = 1
+        tree.pretty_print
 
         expect(tree.root.left_children.left_children.value).to eq(1)
       end
