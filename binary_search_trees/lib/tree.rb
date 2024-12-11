@@ -87,7 +87,25 @@ class Tree
       remove_node_with_two_children(node_to_delete)
     end
   end
-  
+
+  def level_order_traversal(&block) #breadth-first
+    return nil unless root
+    return "no block given" unless block_given?
+
+    queue = [root]
+    results = []
+
+    while !queue.empty?
+      current_node = queue.shift
+      results << yield(current_node.value)
+
+      queue.push(current_node.left_children) if current_node.left_children
+      queue.push(current_node.right_children) if current_node.right_children
+    end
+
+    results
+  end
+
 
   private
 
@@ -105,16 +123,6 @@ class Tree
                     value.nil? || 
                     value < 0 
     true
-  end
-
-  def add_to_queue!(queue, node)
-    queue.push(element)
-    queue
-  end
-
-  def remove_from_queue!(queue, node)
-    queue.shift(element)
-    queue
   end
 
   def find_node_by_value(value, node = root)

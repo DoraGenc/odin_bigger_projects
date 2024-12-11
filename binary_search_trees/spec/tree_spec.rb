@@ -342,4 +342,40 @@ RSpec.describe Tree do
       end
     end
   end
+
+  describe "#level_order_traversal" do
+    let(:tree) { described_class.new([1, 2, 3]) }
+    let(:deep_tree) { described_class.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) }
+
+    context "when a block is given" do
+      context "when the root is nil" do
+        it "returns nil" do
+          empty_tree = Tree.new
+          expect(empty_tree.level_order_traversal).to eq(nil)
+        end
+      end
+
+      it "calls the block" do
+        expect { |b| tree.level_order_traversal(&b) }.to yield_control
+      end
+
+      it "returns the results of the block with all of the node's values & in the right order" do
+        expected_result = [1, 0, 2]
+        expect(tree.level_order_traversal {|value| value -= 1 }).to eq(expected_result)
+      end
+
+      context "when the tree has a deep structure" do
+        it "returns the correct result in the correct order" do
+          expected_result = [4, 2, 7, 1, 3, 6, 8, 0, 5]
+          expect(deep_tree.level_order_traversal {|value| value -= 1 }).to eq(expected_result)
+        end
+      end
+    end
+
+    context "when a block is not given" do
+      it "returns an error" do
+        expect(tree.level_order_traversal).to eq("no block given")
+      end
+    end
+  end
 end
