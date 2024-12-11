@@ -231,6 +231,12 @@ RSpec.describe Tree do
   describe "#node_exists?" do
     let(:tree) { described_class.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) }
 
+    context "when the given value is nil" do
+      it "returns nil" do
+        expect(tree.node_exists?(nil)).to eq(nil)
+      end
+    end
+
     context "when a value is assigned to a node" do
       it "returns true" do
         expect(tree.node_exists?(5)).to eq(true)
@@ -251,65 +257,91 @@ RSpec.describe Tree do
     end
   end
 
+  describe "#nodes_exist?" do
+    let(:tree) { described_class.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) }
+
+    context "when the given value is nil" do
+      it "returns nil" do
+        expect(tree.nodes_exist?(nil)).to eq(nil)
+      end
+    end
+
+    context "when any given value is nil" do
+      it "returns nil" do
+        invalid_values_array = [1, nil, 3]
+        expect(tree.nodes_exist?(invalid_values_array)).to eq(nil)
+      end
+    end
+
+    context "when a root does not exist" do
+      it "returns false" do
+        empty_tree = Tree.new
+        values_array = [1, 2, 3]
+        expect(empty_tree.nodes_exist?(values_array)).to eq(false)
+      end
+    end
+
+    context "when all values are assigned to a node" do
+      it "returns true" do
+        existing_values = [1, 2, 3]
+        expect(tree.nodes_exist?(existing_values)).to eq(true)
+      end
+    end
+
+    context "when any value is not assigned to a node" do
+      it "returns false" do
+       array_with_not_assigned_value = [1, 2, 10]
+       expect(tree.nodes_exist?(array_with_not_assigned_value)).to eq(false)
+      end
+    end
+  end
+
   describe "#delete" do
     let(:tree) { described_class.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) }
 
-    context "when the node to delete is the root" do
-      it "deletes the root" do
-        tree.delete(5)
-
-        expect(tree.root).to eq(nil)
+    context "when the value does not exist" do
+      it "returns an error" do
+        expect(tree.delete(10)).to eq("The given value does not exist.")
       end
     end
 
-    context "when the node to delete is a leaf" do #hier
-      it "deletes the leaf" do
-        tree.pretty_print
+    context "when the node has no children" do
+      it "deletes the node" do
         tree.delete(1)
-        tree.pretty_print
         expect(tree.node_exists?(1)).to eq(false)
       end
+
+      it "only deletes the child with the given value" do
+        small_tree = Tree.new([1, 2, 3])
+        small_tree.delete(1)
+        expect(small_tree.nodes_exist?([2, 3])).to eq(true)
+      end
     end
 
-    context "when the node to delete has only one child" do
+    context "when the node has one child" do
+      it "deletes the node" do
+        tree.delete(2)
+        expect(tree.node_exists?(2)).to eq(false)
+      end
+
+      it "does not delete its child" do
+        tree.delete(2)
+        expect(tree.node_exists?(1)).to eq(true)
+      end
+    end
+
+    context "when the node has two children" do
       it "deletes the node" do
         tree.delete(8)
-
         expect(tree.node_exists?(8)).to eq(false)
       end
 
-      it "does not delete its children" do
-        tree.delete(2)
-
-        expect(tree.node_exists?(1)).to eq(true)
-      end
-
-      it "links its children to the correct node" do
+      it "does not delete any other nodes" do
         tree.pretty_print
-        tree.delete(2)
-        orphaned_child_value = 1
-        tree.pretty_print
-
-        expect(tree.root.left_children.left_children.value).to eq(1)
-      end
-    end
-
-    context "when the node to delete has 2 children" do
-      it "deletes the node" do
         tree.delete(3)
-
-        expect(tree.node_exists?(3)).to eq(false)
-      end
-
-      it "does not delete its children" do
-        #tree.pretty_print
-        tree.delete(3)
-        puts ""
         tree.pretty_print
 
-        expect(tree.node_exists?(4)).to eq(true)
-        expect(tree.node_exists?(2)).to eq(true)
-        expect(tree.node_exists?(1)).to eq(true)
+        expect(tree.nodes_exist?([1, 2, 4, 5, 6, 7, 8, 9])).to eq(true)
       end
     end
   end
