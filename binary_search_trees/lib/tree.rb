@@ -88,7 +88,7 @@ class Tree
     end
   end
 
-  def level_order_traversal(&block) #breadth-first
+  def level_order_traversal #breadth-first
     return nil unless root
     return "no block given" unless block_given?
 
@@ -101,6 +101,29 @@ class Tree
 
       queue.push(current_node.left_children) if current_node.left_children
       queue.push(current_node.right_children) if current_node.right_children
+    end
+
+    results
+  end
+
+  def inorder_traversal
+    return nil unless root
+    return "no block given" unless block_given?
+
+    stack = []
+    results = []
+    current_node = root
+
+    while current_node || !stack.empty?
+      while current_node
+        stack.push(current_node)
+        current_node = current_node.left_children
+      end
+
+      current_node = stack.pop
+      results << yield(current_node.value)
+
+      current_node = current_node.right_children
     end
 
     results
