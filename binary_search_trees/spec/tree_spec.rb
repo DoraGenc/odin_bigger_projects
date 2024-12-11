@@ -337,10 +337,7 @@ RSpec.describe Tree do
       end
 
       it "does not delete any other nodes" do
-        tree.pretty_print
         tree.delete(3)
-        tree.pretty_print
-
         expect(tree.nodes_exist?([1, 2, 4, 5, 6, 7, 8, 9])).to eq(true)
       end
     end

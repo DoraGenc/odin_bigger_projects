@@ -33,14 +33,14 @@ class Tree
 
   def find_node(value, current_node = root) #name ändern find parent node oder so
     return "Invalid value. Please only choose positive Integers or Floats." unless valid_value?(value)
-    return last_node(value, current_node)
+    return find_node_by_value(value, current_node)
   end
 
   def node_exists?(value)
     return false if root.nil?
     return nil if value.nil?
 
-    return true if last_node(value).value == value
+    return true if find_node_by_value(value).value == value
     false
   end
 
@@ -53,7 +53,7 @@ class Tree
     values_array.each do |value|
       return nil if value.nil?
 
-      if last_node(value).value == value
+      if find_node_by_value(value).value == value
         true_counter += 1 
       else
         return false
@@ -66,15 +66,14 @@ class Tree
   def insert(value)
     return nil unless root
     return "Invalid value. Please only choose positive Integers or Floats." unless valid_value?(value)
-    append_new_node(value, last_node(value)) unless node_exists?(value)
+    append_new_node(value, find_node_by_value(value)) unless node_exists?(value)
   end
-
 
   def delete(value)
     return "The given value does not exist." unless node_exists?(value)
     
     parent = parent_node(value)
-    node_to_delete = last_node(value)
+    node_to_delete = find_node_by_value(value)
     direction_of_node_to_delete = right_or_left(value, parent)
     
     children_of_node_to_delete = node_to_delete.left_children || node_to_delete.right_children
@@ -83,7 +82,7 @@ class Tree
     when 0
       delete_children(parent, direction_of_node_to_delete)
     when 1
-      parent.send("#{direction_of_node_to_delete}_children=", children_of_node_to_delete)  # Dynamischer Aufruf einer Methode: object.send(method_name (string oder symbol), arguments)
+      parent.send("#{direction_of_node_to_delete}_children=", children_of_node_to_delete)  # also beispielsweise: parent.left_children = children
     when 2
       remove_node_with_two_children(node_to_delete)
     end
@@ -118,7 +117,7 @@ class Tree
     queue
   end
 
-  def last_node(value, node = root)
+  def find_node_by_value(value, node = root)
     return nil if node.nil?
     return node if node.value == value
 
@@ -126,14 +125,14 @@ class Tree
       if node.left_children.nil?
         return node
       else
-        return last_node(value, node.left_children)
+        return find_node_by_value(value, node.left_children)
       end
 
     else
       if node.right_children.nil?
         return node
       else
-        last_node(value, node.right_children)
+        find_node_by_value(value, node.right_children)
       end
     end
   end
