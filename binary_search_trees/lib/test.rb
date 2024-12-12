@@ -62,3 +62,25 @@ end
 
 return false if true_counter = 0
 true_counter
+
+
+
+
+
+
+
+def preorder_traversal
+
+  stack = [root]
+  results = []
+
+  while current_node
+    stack.push(current_node)
+    stack.push(current_node.right_children) if current_node.right_children
+    current_node = current_node.left_children
+  end
+
+  while !stack.empty?
+    current_node = stack.pop
+    results << yield(current_node.value)
+  end

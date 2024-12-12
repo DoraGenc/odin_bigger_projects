@@ -129,6 +129,18 @@ class Tree
     results
   end
 
+  def preorder_traversal(current_node = root, result = [], &block)
+    return if current_node.nil?
+    return "no block given" unless block_given?
+  
+    result << yield(current_node.value)
+
+    preorder_traversal(current_node.left_children, result, &block)
+    preorder_traversal(current_node.right_children, result, &block)
+
+    result.compact
+  end
+
 
   private
 
