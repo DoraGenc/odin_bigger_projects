@@ -130,7 +130,7 @@ class Tree
   end
 
   def preorder_traversal(current_node = root, result = [], &block)
-    return if current_node.nil?
+    return unless current_node
     return "no block given" unless block_given?
   
     result << yield(current_node.value)
@@ -138,7 +138,17 @@ class Tree
     preorder_traversal(current_node.left_children, result, &block)
     preorder_traversal(current_node.right_children, result, &block)
 
-    result.compact
+    result
+  end
+
+  def postorder_traversal(current_node = root, result = [], &block)
+    return nil unless current_node
+    return "no block given" unless block_given?
+
+    postorder_traversal(current_node.left_children, result, &block)
+    postorder_traversal(current_node.right_children, result, &block)
+
+    result << yield(current_node.value)
   end
 
 

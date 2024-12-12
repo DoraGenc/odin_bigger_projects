@@ -459,4 +459,41 @@ RSpec.describe Tree do
       end
     end
   end
+
+  describe "#postorder_traversal" do
+    let(:tree) { described_class.new([1, 2, 3]) }
+    let(:deep_tree) { described_class.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) }
+
+    context "when a block is given" do
+      context "when the root is nil" do
+        it "returns nil" do
+          empty_tree = Tree.new
+          expect(empty_tree.postorder_traversal).to eq(nil)
+        end
+      end
+
+      it "calls the block" do
+        expect { |b| tree.postorder_traversal(&b) }.to yield_control
+      end
+
+      it "returns the results of the block with all of the node's values & in the right order" do
+        expected_result = [0, 2, 1]
+ 
+        expect(tree.postorder_traversal{|value| value -= 1 }).to eq(expected_result)
+      end
+
+      context "when the tree has a deep structure" do
+        it "returns the correct result in the correct order" do
+          expected_result = [0, 1, 3, 2, 5, 6, 8, 7, 4]
+          expect(deep_tree.postorder_traversal {|value| value -= 1 }).to eq(expected_result)
+        end
+      end
+    end
+
+    context "when a block is not given" do
+      it "returns an error" do
+        expect(tree.postorder_traversal).to eq("no block given")
+      end
+    end
+  end
 end
