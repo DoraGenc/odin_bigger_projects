@@ -568,4 +568,61 @@ RSpec.describe Tree do
       end
     end
   end
+
+  describe "#depth" do
+    let(:tree) { described_class.new([1, 2, 3]) }
+    let(:deep_tree) { described_class.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) }
+
+    context "when a root does not exist" do
+      it "returns nil" do
+        empty_tree = Tree.new
+        expect(empty_tree.depth(Node.new)).to eq(nil)
+      end
+    end
+
+    context "when a given node does not exist" do
+      it "returns nil" do
+        new_node = Node.new(-1)
+
+        expect(tree.depth(new_node)).to eq(nil)
+      end
+    end
+
+    context "when a given node exists" do
+      it "returns the depth of the node" do
+        expected_depth = 1
+
+        expect(deep_tree.depth(deep_tree.find_node(8))).to eq(expected_depth)
+      end
+    end
+
+    context "when the bst is unbalanced" do
+      it "still returns the correct depth" do
+        unbalanced_tree = Tree.new((1..9).to_a)
+
+        unbalanced_tree.insert(10)
+        unbalanced_tree.insert(11)
+        unbalanced_tree.insert(12)
+
+        target_node = unbalanced_tree.find_node(11)
+        depth_of_target_node = 4
+
+        expect(unbalanced_tree.depth(target_node)).to eq(depth_of_target_node)
+      end
+    end
+
+    context "when the searched node is the root" do
+      it "returns 0 as the depth" do
+        root_node = deep_tree.root
+        expect(deep_tree.depth(root_node)).to eq(0)
+      end
+    end
+
+    context "when the tree has only one node" do
+      it "returns 0 for the single node" do
+        single_node_tree = Tree.new([1])
+        expect(single_node_tree.depth(single_node_tree.root)).to eq(0)
+      end
+    end
+  end
 end

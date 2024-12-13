@@ -170,7 +170,19 @@ class Tree
     [left_height, right_height].max
   end
   
- 
+  def depth(searched_node, current_node = root, counted_edges = 0)
+    return nil unless current_node
+    return nil unless node_exists?(searched_node.value)
+  
+    return counted_edges if current_node == searched_node
+  
+    if searched_node.value < current_node.value
+      depth(searched_node, current_node.left_children, counted_edges + 1)
+    else
+      depth(searched_node, current_node.right_children, counted_edges + 1)
+    end
+  end
+  
 
   private
 
