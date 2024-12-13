@@ -160,10 +160,17 @@ class Tree
     result << yield(current_node.value)
   end
 
-  def height(value)
-   return "the given node assigned to the value does not exist" unless find_node_by_value(value)
-  end
+  def height(current_node = root, counted_edges = 0)
+    return nil unless root
+    return counted_edges if current_node.nil?
+  
+    left_height = height(current_node.left_children, counted_edges + 1)
+    right_height = height(current_node.right_children, counted_edges + 1)
 
+    [left_height, right_height].max
+  end
+  
+ 
 
   private
 

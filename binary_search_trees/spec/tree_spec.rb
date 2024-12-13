@@ -428,7 +428,7 @@ RSpec.describe Tree do
       context "when the tree has a deep structure" do
         it "returns the correct result in the correct order" do
           expected_result = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-          deep_tree.pretty_print
+
           expect(deep_tree.inorder_traversal {|value| value -= 1 }).to eq(expected_result)
         end
       end
@@ -525,9 +525,47 @@ RSpec.describe Tree do
     let(:tree) { described_class.new([1, 2, 3]) }
     let(:deep_tree) { described_class.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) }
 
-    it "returns an error if the value does not exist" do
-      non_existent_value = 4
-      expect(tree.height(10)).to eq("the given node assigned to the value does not exist")
+    context "when a root does not exist" do
+      it "returns nil" do
+        empty_tree = Tree.new
+        expect(empty_tree.height).to eq(nil)
+      end
+    end
+
+    context "when a value exists" do
+      context "when the tree is deep" do
+        it "returns the correct hight" do
+          target_node = deep_tree.root.left_children # node with value 3
+
+          expect(deep_tree.height(target_node)).to eq(3)
+        end
+      end
+
+      context "when the tree is really deep" do
+        it "returns the correct hight" do
+          very_deep_tree = Tree.new((1..30).to_a)
+
+          target_node = very_deep_tree.find_node(26)
+          height_of_target_node = 2
+
+          expect(very_deep_tree.height(target_node)).to eq(height_of_target_node)
+        end
+      end
+
+      context "when not having a balanced bst" do
+        it "returns the correct hight" do
+          unbalanced_tree = Tree.new((1..9).to_a)
+
+          unbalanced_tree.insert(10)
+          unbalanced_tree.insert(11)
+          unbalanced_tree.insert(12)
+
+          target_node = unbalanced_tree.find_node(8)
+          height_of_target_node = 5
+
+          expect(unbalanced_tree.height(target_node)).to eq(height_of_target_node)
+        end
+      end
     end
   end
 end
