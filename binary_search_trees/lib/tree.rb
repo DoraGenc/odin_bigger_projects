@@ -72,6 +72,7 @@ class Tree
   def insert(value)
     return nil unless root
     return "Invalid value. Please only choose positive Integers or Floats." unless valid_value?(value)
+    return "node already exists" if node_exists?(value)
     parent =  node_to_append_leaf(value)
 
     append_new_node(value, parent) unless parent.nil?

@@ -232,6 +232,24 @@ RSpec.describe Tree do
         expect(empty_tree.insert(1)).to eq(nil)
       end
     end
+
+    context "when a node already exists" do
+      before do
+        allow(tree).to receive(:append_new_node).and_call_original
+      end
+
+      it "returns an error" do
+        already_existing_value = 1
+        expect(tree.insert(already_existing_value)).to eq("node already exists")
+      end
+
+      it "does not append a leaf" do
+        already_existing_value = 1
+        tree.insert(already_existing_value)
+
+        expect(tree).not_to have_received(:append_new_node)
+      end
+    end
   end
 
   describe "#node_exists?" do
