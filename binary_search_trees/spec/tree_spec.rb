@@ -121,7 +121,7 @@ RSpec.describe Tree do
 
       context "when the value is valid" do
         it "returns the correct node" do
-          searched_value = 2.5
+          searched_value = 3
           returned_node = tree.find_node(searched_value)
 
           expect(returned_node.value).to eq(3)
@@ -149,11 +149,17 @@ RSpec.describe Tree do
         it "returns the correct node" do
           large_tree = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])
 
-          searched_value = 10
+          searched_value = 9
           returned_node =  large_tree.find_node(searched_value)
-          correct_returned_node_value = 9
 
-          expect(returned_node.value).to eq(correct_returned_node_value)
+          expect(returned_node.value).to eq(searched_value)
+        end
+      end
+
+      context "when the value is not assigned to a node" do
+        it "returns nil" do
+          non_existent_value = 10
+          expect(tree.find_node(10)).to eq(nil)
         end
       end
     end
@@ -494,6 +500,16 @@ RSpec.describe Tree do
       it "returns an error" do
         expect(tree.postorder_traversal).to eq("no block given")
       end
+    end
+  end
+
+  describe "#height" do
+    let(:tree) { described_class.new([1, 2, 3]) }
+    let(:deep_tree) { described_class.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) }
+
+    it "returns an error if the value does not exist" do
+      non_existent_value = 4
+      expect(tree.height(10)).to eq("the given node assigned to the value does not exist")
     end
   end
 end

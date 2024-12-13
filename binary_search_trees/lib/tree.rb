@@ -33,14 +33,17 @@ class Tree
 
   def find_node(value, current_node = root) #name ändern find parent node oder so
     return "Invalid value. Please only choose positive Integers or Floats." unless valid_value?(value)
-    return find_node_by_value(value, current_node)
+    found_node = find_node_by_value(value, current_node)
+    return found_node if found_node
   end
 
   def node_exists?(value)
     return false if root.nil?
     return nil if value.nil?
 
-    return true if find_node_by_value(value).value == value
+    found_value = find_node_by_value(value) #refactoring
+    return false if found_value.nil?
+    return true if found_value.value == value
     false
   end
 
@@ -53,7 +56,10 @@ class Tree
     values_array.each do |value|
       return nil if value.nil?
 
-      if find_node_by_value(value).value == value
+      found_node = find_node_by_value(value)
+      return false unless found_node
+
+      if found_node.value == value
         true_counter += 1 
       else
         return false
@@ -66,7 +72,9 @@ class Tree
   def insert(value)
     return nil unless root
     return "Invalid value. Please only choose positive Integers or Floats." unless valid_value?(value)
-    append_new_node(value, find_node_by_value(value)) unless node_exists?(value)
+    parent =  node_to_append_leaf(value)
+
+    append_new_node(value, parent) unless parent.nil?
   end
 
   def delete(value)
@@ -151,6 +159,10 @@ class Tree
     result << yield(current_node.value)
   end
 
+  def height(value)
+   return "the given node assigned to the value does not exist" unless find_node_by_value(value)
+  end
+
 
   private
 
@@ -164,7 +176,9 @@ class Tree
   end
 
   def valid_value?(value)
-    return false if !(value.is_a?(Integer) || value.is_a?(Float)) || 
+    return false if #node_exists?(value)
+                    !(value.is_a?(Integer) || 
+                    value.is_a?(Float)) || 
                     value.nil? || 
                     value < 0 
     true
@@ -175,17 +189,28 @@ class Tree
     return node if node.value == value
 
     if value < node.value
+      return find_node_by_value(value, node.left_children)
+    else
+     return find_node_by_value(value, node.right_children)
+    end
+  end
+
+  def node_to_append_leaf(value, node = root)
+    return nil if node.nil?
+    return node if node.value == value
+
+    if value < node.value
       if node.left_children.nil?
-        return node
+        return node 
       else
-        return find_node_by_value(value, node.left_children)
+        return node_to_append_leaf(value, node.left_children)
       end
 
     else
       if node.right_children.nil?
         return node
       else
-        find_node_by_value(value, node.right_children)
+        return node_to_append_leaf(value, node.right_children)
       end
     end
   end
