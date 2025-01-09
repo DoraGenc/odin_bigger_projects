@@ -76,6 +76,8 @@ RSpec.describe BucketManager do
         expect(bucketmanager.current_capacity).to eq(2)
       end
     end
+
+    #capacity ändern test
   end
 
   describe "#get" do

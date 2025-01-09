@@ -625,4 +625,104 @@ RSpec.describe Tree do
       end
     end
   end
+
+  describe "#balanced?" do
+   let(:balanced_tree) { described_class.new([1, 2, 3])}
+
+    context "when the root is nil" do
+      invalid_tree = Tree.new
+      it "returns an error" do
+        expect(invalid_tree.balanced?).to be_nil
+      end
+    end
+
+    context "when the tree is balanced" do
+      it "returns true" do
+        expect(balanced_tree.balanced?).to eq(true)
+      end
+
+      context "when the tree does not have left nor right children" do
+        it "returns true" do
+          small_tree = Tree.new([1])
+
+          expect(small_tree.balanced?).to eq(true)
+        end
+      end
+    end
+
+    context "when the tree is not balanced" do
+      it "returns false" do
+        balanced_tree.insert(1.1)
+        balanced_tree.insert(1.2)
+
+        unbalanced_tree = balanced_tree
+        
+        expect(unbalanced_tree.balanced?).to eq(false)
+      end
+    end
+  end
+
+  describe "rebalance" do
+    let(:balanced_tree) { described_class.new([1, 2, 3])}
+
+    context "when the tree is unbalanced" do
+      it "rebalances the tree correctly" do
+        balanced_tree.insert(1.1)
+        balanced_tree.insert(1.2)
+
+        unbalanced_tree = balanced_tree
+        unbalanced_tree.balance!
+
+        expect(unbalanced_tree.balanced?).to eq(true)
+      end
+
+      it "still contains all values" do
+        balanced_tree.insert(1.1)
+        balanced_tree.insert(1.2)
+
+        unbalanced_tree = balanced_tree
+        values_before = unbalanced_tree.extract_values.sort
+
+        unbalanced_tree.balance!
+        values_after = unbalanced_tree.extract_values.sort
+
+        expect(values_before).to eq(values_after)
+      end
+    end
+
+    context "when rebalancing multiple times" do
+      it "remains balanced after multiple rebalance calls" do
+        balanced_tree.insert(1.1)
+        balanced_tree.insert(1.2)
+        balanced_tree.insert(2.5)
+        balanced_tree.insert(3.5)
+  
+        unbalanced_tree = balanced_tree
+        unbalanced_tree.balance!
+        unbalanced_tree.balance!
+  
+        expect(unbalanced_tree.balanced?).to eq(true)
+      end
+    end
+
+    context "when the tree is already balanced" do
+      it "changes nothing" do
+        structure_before = balanced_tree
+        balanced_tree.balance!
+  
+        expect(structure_before).to eq(balanced_tree)
+      end
+    end
+
+    context "when the tree is balanced" do
+      it "does not change the root when balancing a tree that is already balanced" do
+        single_node_tree = Tree.new([1])
+        root_before_balance = single_node_tree.root
+    
+        single_node_tree.balance!
+    
+        expect(single_node_tree.root).to eq(root_before_balance)
+      end
+    end
+  end
 end

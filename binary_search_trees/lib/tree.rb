@@ -22,10 +22,11 @@ class Tree
     node.left_children = build_tree(node_value_array[0...mid_index])
     node.right_children = build_tree(node_value_array[mid_index + 1..])
     
-    return node
+    root = node
+    return root
   end
 
-  def pretty_print(node = @root, prefix = '', is_left = true)
+  def tree_pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right_children, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_children
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
     pretty_print(node.left_children, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left_children
@@ -182,8 +183,37 @@ class Tree
       depth(searched_node, current_node.right_children, counted_edges + 1)
     end
   end
-  
 
+  def balanced?(tree_root = root)
+    return nil unless root
+    
+    right_height = height(root.right_children)
+    left_height = height(root.left_children)
+
+    difference = right_height - left_height
+
+    return true if difference == 0 || difference == 1
+    false
+  end
+
+  def balance!
+    return if balanced?
+
+    self.root = build_tree(extract_values(root))
+  end
+
+  def extract_values(current_node = root, values_array = [])
+    return nil unless current_node
+    return values_array if current_node.nil?
+
+    values_array << current_node.value
+
+    extract_values(current_node.left_children, values_array)
+    extract_values(current_node.right_children, values_array)
+
+    return values_array
+  end
+  
   private
 
   attr_writer :root, :binary_tree_values

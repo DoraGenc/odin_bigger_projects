@@ -1,7 +1,6 @@
 require_relative 'bucketmanager.rb'
 
 class HashMap
-
   def initialize
     @bucketmanager = BucketManager.new
     @capacity = bucketmanager.capacity

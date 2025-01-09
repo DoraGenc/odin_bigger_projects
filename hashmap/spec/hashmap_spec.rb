@@ -1,7 +1,7 @@
 require_relative '../lib/hashmap.rb'
 
 RSpec.describe HashMap do
-  subject(:hashmap) { described_class.new }
+  let(:hashmap) { described_class.new }
   let(:bucketmanager) { instance_double("BucketManager") }
 
   before do
@@ -33,13 +33,13 @@ RSpec.describe HashMap do
       end
     end
 
-    context "when the add_more_buckets? returns true" do
+    context "when add_more_buckets? returns true" do
       before do
         allow(hashmap).to receive(:add_more_buckets?).and_return(true)
         allow(hashmap).to receive(:add_more_buckets)
       end
 
-      it "does calls #add_more_buckets" do
+      it "calls #add_more_buckets" do
         key = "key"
         value = "value"
 
