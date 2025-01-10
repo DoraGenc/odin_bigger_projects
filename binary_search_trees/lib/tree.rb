@@ -32,7 +32,7 @@ class Tree
     pretty_print(node.left_children, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left_children
   end
 
-  def find_node(value, current_node = root) #name ändern find parent node oder so
+  def find_node(value, current_node = root)
     return "Invalid value. Please only choose positive Integers or Floats." unless valid_value?(value)
     found_node = find_node_by_value(value, current_node)
     return found_node if found_node
@@ -42,7 +42,7 @@ class Tree
     return false if root.nil?
     return nil if value.nil?
 
-    found_value = find_node_by_value(value) #refactoring
+    found_value = find_node_by_value(value)
     return false if found_value.nil?
     return true if found_value.value == value
     false
@@ -58,19 +58,15 @@ class Tree
       return nil if value.nil?
 
       found_node = find_node_by_value(value)
-      return false unless found_node
 
-      if found_node.value == value
-        true_counter += 1 
-      else
-        return false
-      end
+      return false unless found_node && found_node.value == value
+      true_counter += 1 
     end
 
     true
   end
   
-  def insert(value)
+  def insert(value) #als leaf
     return nil unless root
     return "Invalid value. Please only choose positive Integers or Floats." unless valid_value?(value)
     return "node already exists" if node_exists?(value)
@@ -84,21 +80,21 @@ class Tree
     
     parent = parent_node(value)
     node_to_delete = find_node_by_value(value)
-    direction_of_node_to_delete = right_or_left(value, parent)
-    
-    children_of_node_to_delete = node_to_delete.left_children || node_to_delete.right_children
+    direction_of_node_to_delete = right_or_left(value, parent) #vom parent aus
   
-    case how_many_children(node_to_delete)[:count]
+
+    case how_many_children(node_to_delete)[:count] #value für count extrahieren
     when 0
       delete_children(parent, direction_of_node_to_delete)
     when 1
+      children_of_node_to_delete = node_to_delete.left_children || node_to_delete.right_children #kann nur 1 child haben
       parent.send("#{direction_of_node_to_delete}_children=", children_of_node_to_delete)  # also beispielsweise: parent.left_children = children
     when 2
       remove_node_with_two_children(node_to_delete)
     end
   end
 
-  def level_order_traversal #breadth-first
+  def level_order_traversal #immer die ganze ebene erst
     return nil unless root
     return "no block given" unless block_given?
 
@@ -106,7 +102,7 @@ class Tree
     results = []
 
     while !queue.empty?
-      current_node = queue.shift
+      current_node = queue.shift #shift: 1. element entfernen & returnen
       results << yield(current_node.value)
 
       queue.push(current_node.left_children) if current_node.left_children
@@ -116,7 +112,7 @@ class Tree
     results
   end
 
-  def inorder_traversal
+  def inorder_traversal #links wurzel rechts
     return nil unless root
     return "no block given" unless block_given?
 
@@ -125,12 +121,12 @@ class Tree
     current_node = root
 
     while current_node || !stack.empty?
-      while current_node
-        stack.push(current_node)
-        current_node = current_node.left_children
+      while current_node #bis es kein linkes child mehr gibt
+        stack.push(current_node) #wurzel hinzufügen (hinten)
+        current_node = current_node.left_children #links bearbeiten
       end
 
-      current_node = stack.pop
+      current_node = stack.pop #letztes element entfernen & returnen
       results << yield(current_node.value)
 
       current_node = current_node.right_children
@@ -139,7 +135,7 @@ class Tree
     results
   end
 
-  def preorder_traversal(current_node = root, result = [], &block)
+  def preorder_traversal(current_node = root, result = [], &block) #wurzel links recht
     return unless current_node
     return "no block given" unless block_given?
   
@@ -151,7 +147,7 @@ class Tree
     result
   end
 
-  def postorder_traversal(current_node = root, result = [], &block)
+  def postorder_traversal(current_node = root, result = [], &block) #links rechts wurzel
     return nil unless current_node
     return "no block given" unless block_given?
 
@@ -161,26 +157,26 @@ class Tree
     result << yield(current_node.value)
   end
 
-  def height(current_node = root, counted_edges = 0)
+  def height(current_node = root, counted_height = 0) #längster pfad wird bestimmt
     return nil unless root
-    return counted_edges if current_node.nil?
+    return counted_height if current_node.nil?
   
-    left_height = height(current_node.left_children, counted_edges + 1)
-    right_height = height(current_node.right_children, counted_edges + 1)
+    left_height = height(current_node.left_children, counted_height + 1)
+    right_height = height(current_node.right_children, counted_height + 1)
 
     [left_height, right_height].max
   end
   
-  def depth(searched_node, current_node = root, counted_edges = 0)
+  def depth(searched_node, current_node = root, counted_depth = 0) #pfad bis zu einem node wird bestimtm
     return nil unless current_node
     return nil unless node_exists?(searched_node.value)
   
-    return counted_edges if current_node == searched_node
+    return counted_depth if current_node == searched_node
   
     if searched_node.value < current_node.value
-      depth(searched_node, current_node.left_children, counted_edges + 1)
+      depth(searched_node, current_node.left_children, counted_depth + 1)
     else
-      depth(searched_node, current_node.right_children, counted_edges + 1)
+      depth(searched_node, current_node.right_children, counted_depth + 1)
     end
   end
 
@@ -197,6 +193,7 @@ class Tree
   end
 
   def balance!
+    return "The tree is empty. It can not be balanced." if root.nil?
     return if balanced?
 
     self.root = build_tree(extract_values(root))
@@ -221,13 +218,12 @@ class Tree
 
   def format(array)
     self.formatted = true
-    return [] if array.empty? || array.length == 0
+    return [] if array.empty?
     array.flatten.sort.uniq
   end
 
   def valid_value?(value)
-    return false if #node_exists?(value)
-                    !(value.is_a?(Integer) || 
+    return false if !(value.is_a?(Integer) || 
                     value.is_a?(Float)) || 
                     value.nil? || 
                     value < 0 
@@ -251,14 +247,14 @@ class Tree
 
     if value < node.value
       if node.left_children.nil?
-        return node 
+        return node #gefunden
       else
         return node_to_append_leaf(value, node.left_children)
       end
 
     else
       if node.right_children.nil?
-        return node
+        return node #gefunden
       else
         return node_to_append_leaf(value, node.right_children)
       end
@@ -292,6 +288,7 @@ class Tree
   def parent_node(value, node = root)
     return nil if node.nil?
 
+    #base case
     if (node.left_children && node.left_children.value == value) ||
       (node.right_children && node.right_children.value == value)
      return node
@@ -313,7 +310,7 @@ class Tree
   
     current_node = node.right_children
   
-    while current_node.left_children
+    while current_node.left_children #nächstgrößte wert ist links
       current_node = current_node.left_children
     end
   
@@ -340,7 +337,7 @@ class Tree
 
   def delete_children(parent, direction)
 
-    if direction == "right" #ändern?
+    if direction == "right"
       parent.right_children = nil
 
     else
@@ -349,25 +346,21 @@ class Tree
   end
 
   def remove_node_with_two_children(node_to_delete)
-    # 1. eins nach rechts gehen
+
+    #1. den nächstgrößten Wert finden
     current_node = node_to_delete.right_children
 
-    # 2. so weit wie es geht nach links gehen (bis children nil)
     while current_node.left_children
       current_node = current_node.left_children
     end
 
-    # 3. den value speichern des nodes, den man hat
     next_larger_node = current_node
-
-    #parent node speichern
     parent = parent_node(next_larger_node.value)
     
-    # 4. den value des nodes zum löschen ersetzen mit dem gefundenen value
+    # den value des nodes zum löschen ersetzen mit dem gefundenen value
     node_to_delete.value = next_larger_node.value
 
     # den parent auf die rechten children pointen des nodes, von dem der wert getauscht wurde
     parent.right_children = next_larger_node.right_children
   end
 end
-

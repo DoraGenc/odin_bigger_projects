@@ -724,5 +724,13 @@ RSpec.describe Tree do
         expect(single_node_tree.root).to eq(root_before_balance)
       end
     end
+
+    context "when a root does not exist" do
+      it "returns an error" do
+        empty_tree = Tree.new
+
+        expect(empty_tree.balance!).to eq("The tree is empty. It can not be balanced.")
+      end
+    end
   end
 end
